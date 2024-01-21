@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             width: MediaQuery.of(context).size.width / 2 + 50,
             height: MediaQuery.of(context).size.height * 0.1 - 25,
-            child: Text(
+            child:  Text(
               btntxt,
               textAlign: TextAlign.center,
               style: TextStyle(

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tflite/tflite.dart';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_vision/flutter_vision.dart';
 
 class PictureScreen extends StatefulWidget {
   final Uint8List? image;
@@ -15,9 +15,9 @@ class PictureScreen extends StatefulWidget {
 }
 
 class _PictureScreenState extends State<PictureScreen> {
+  FlutterVision vision = FlutterVision();
   @override
   void initState() {
- 
     super.initState();
     loadModel();
   }
@@ -25,23 +25,25 @@ class _PictureScreenState extends State<PictureScreen> {
   late List _results = [];
 
   Future loadModel() async {
-    String? res = await Tflite.loadModel(
-      model: "assets/best_float32.tflite",
-      labels: "assets/metadata.txt",
-      // useGpuDelegate: true,
-    );
-    print("Model loading status,$res");
+ await vision.loadYoloModel(
+         labels: "assets/metadata.txt",
+        modelPath: "assets/best_float32.tflite",
+        modelVersion: "yolov8",
+        quantization: false,
+        numThreads: 1,
+        useGpu: false );
+   
   }
 
-  Future imageClassification(File selectedImage) async {
-    print('Welcome, ${selectedImage}');
-    var recognitions = await Tflite.detectObjectOnImage(
-        path: selectedImage.path,
-        model: "YOLO",
-        threshold: 0.3,
-        imageMean: 0.0,
-        imageStd: 255.0,
-        numResultsPerClass: 1);
+  Future imageClassification(image) async {
+    print('Welcome, ${image}');
+    var recognitions = await vision.yoloOnImage(
+        bytesList: image,
+        imageHeight: image.height,
+        imageWidth: image.width,
+        iouThreshold: 0.8,
+        confThreshold: 0.4,
+        classThreshold: 0.7);
 
     if (recognitions != null) {
       if (recognitions.isNotEmpty) {
@@ -119,7 +121,7 @@ class _PictureScreenState extends State<PictureScreen> {
                         ),
                   const SizedBox(height: 20),
                   InkWell(
-                    onTap: () => {imageClassification(widget.selectedImage!)},
+                    onTap: () => {imageClassification(widget.image!)},
                     child: Container(
                       height: 55,
                       width: 300,

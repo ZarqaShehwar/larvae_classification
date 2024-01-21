@@ -1,13 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
+import 'package:larvae_classification/Screens/HomeScreen2.dart';
 import 'SignUpScreen2.dart';
 import 'LoginScreen.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
-
+ WelcomeScreen({Key? key}) : super(key: key);
+FirebaseServices _auth = FirebaseServices();
   @override
   Widget build(BuildContext context) {
+
+    void SignInwithgoogle()async{
+      try{
+ UserCredential? user = await _auth.signInWithGoogle();
+ if(user!=null){
+  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen2()));
+ }}
+ catch(e){
+  print('error occur while doing google ${e}');
+ }
+    }
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -18,12 +32,12 @@ class WelcomeScreen extends StatelessWidget {
           Color(0xff281537),
         ])),
         child: Column(children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 200.0),
-            child: Image(image: AssetImage('assets/images/logo.png')),
-          ),
+          // const Padding(
+          //   padding: EdgeInsets.only(top: 200.0),
+          //   child: Image(image: AssetImage('assets/images/img_inner_page.png')),
+          // ),
           const SizedBox(
-            height: 100,
+            height: 200,
           ),
           const Text(
             'Welcome Back',
@@ -115,6 +129,11 @@ class WelcomeScreen extends StatelessWidget {
                     child: const  Icon(FontAwesomeIcons.facebookF,size: 24.0, )),
               ),
              const  SizedBox(width: 20,),
+             InkWell(
+              onTap: ()=>{
+              SignInwithgoogle()
+              },
+             child:
               Container(
                 height: 40,
                 width: 80,
@@ -136,6 +155,7 @@ class WelcomeScreen extends StatelessWidget {
                     },
                     child:const  Icon(FontAwesomeIcons.google,size: 20.0,)),
               ),
+             ),
             ],
           ),
        

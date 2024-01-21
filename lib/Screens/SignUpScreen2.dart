@@ -24,7 +24,7 @@ class RegScreen extends StatelessWidget {
       String username = _userController.text;
       String password = _passwordController.text;
       String email = _emailController.text;
-      print(email);
+      print(email + password);
       User? user = await _auth.signUpwithEmailAndpassword(email, password);
       if (user != null) {
         print("success");
@@ -71,36 +71,58 @@ class RegScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                
                   InputField(
-                              controller: _userController,
-                              lbltxt: 'Full Name',
-                              hnttxt: '',
-                              icon: Icons.keyboard,
-                              kybrdtype: TextInputType.text,
-                            ),
-                             InputField(
-                            controller: _emailController,
-                            lbltxt: 'Email',
-                            hnttxt: 'Enter Email',
-                            icon: Icons.person,
-                            kybrdtype: TextInputType.emailAddress,
-                          ),
-                           InputField(
-                              controller: _passwordController,
-                              lbltxt: 'Password',
-                              hnttxt: 'Enter Password',
-                              icon: Icons.visibility_off,
-                              kybrdtype: TextInputType.text,
-                            ),
-                             InputField(
-                              controller: _passwordController,
-                              lbltxt: ' Confirm  Password',
-                              hnttxt: 'Enter RePassword',
-                              icon: Icons.visibility_off,
-                              kybrdtype: TextInputType.text,
-                            ),
-              
+                    controller: _userController,
+                    lbltxt: 'Full Name',
+                    hnttxt: '',
+                    icon: Icons.keyboard,
+                    kybrdtype: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null; // Validation passed
+                    },
+                  ),
+                  InputField(
+                    controller: _emailController,
+                    lbltxt: 'Email',
+                    hnttxt: 'Enter Email',
+                    icon: Icons.person,
+                    kybrdtype: TextInputType.emailAddress,
+                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null; // Validation passed
+                    },
+                  ),
+                  InputField(
+                    controller: _passwordController,
+                    lbltxt: 'Password',
+                    hnttxt: 'Enter Password',
+                    icon: Icons.visibility_off,
+                    kybrdtype: TextInputType.text,
+                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null; // Validation passed
+                    },
+                  ),
+                  InputField(
+                    controller: _passwordController,
+                    lbltxt: ' Confirm  Password',
+                    hnttxt: 'Enter RePassword',
+                    icon: Icons.visibility_off,
+                    kybrdtype: TextInputType.text,
+                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null; // Validation passed
+                    },
+                  ),
                   const SizedBox(
                     height: 10,
                   ),

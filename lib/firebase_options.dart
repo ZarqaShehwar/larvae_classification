@@ -66,6 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '653490858374',
     projectId: 'larvae-classification',
     storageBucket: 'larvae-classification.appspot.com',
+    iosClientId: '653490858374-s5s01m4m2v529geilal1gcn8hrd0a40e.apps.googleusercontent.com',
     iosBundleId: 'com.example.larvaeClassification',
   );
 
@@ -75,6 +76,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '653490858374',
     projectId: 'larvae-classification',
     storageBucket: 'larvae-classification.appspot.com',
+    iosClientId: '653490858374-880q4nn4naomrnbfgosfi4ufkkuldul2.apps.googleusercontent.com',
     iosBundleId: 'com.example.larvaeClassification.RunnerTests',
   );
 }

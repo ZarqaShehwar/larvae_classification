@@ -12,7 +12,12 @@
           "package_name": "com.example.larvae_classification"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "653490858374-lumu2i805tnq7p09fab1aei3vrs6573e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCXk9HGPaaO_86Il9lZgG4c4am7bgKXGuA"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653490858374-lumu2i805tnq7p09fab1aei3vrs6573e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "653490858374-880q4nn4naomrnbfgosfi4ufkkuldul2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.larvaeClassification.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }

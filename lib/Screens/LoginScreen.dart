@@ -14,24 +14,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final FirebaseServices _auth = FirebaseServices();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+ FirebaseServices _auth = FirebaseServices();
 
   void login() async {
-    print('hello');
     String email = _emailController.text;
     String password = _passwordController.text;
+    print(email + password);
     try {
       User? user = await _auth.signInwithEmailAndpassword(email, password);
       if (user != null) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const HomeScreen2()));
       }
+      print(user!);
     } catch (e) {
       print('${e.toString()}');
     }
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -73,17 +76,31 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const InputField(
+                  InputField(
+                    controller: _emailController,
                     lbltxt: 'Email',
                     hnttxt: 'Enter Email',
                     icon: Icons.person,
                     kybrdtype: TextInputType.emailAddress,
+                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null; // Validation passed
+                    },
                   ),
-                  const InputField(
+                  InputField(
+                    controller: _passwordController,
                     lbltxt: 'Password',
                     hnttxt: 'Enter Password',
                     icon: Icons.visibility_off,
                     kybrdtype: TextInputType.text,
+                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null; // Validation passed
+                    },
                   ),
                   const SizedBox(
                     height: 20,
