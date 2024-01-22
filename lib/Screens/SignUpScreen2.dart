@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegScreen extends StatelessWidget {
   const RegScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
     TextEditingController _userController = TextEditingController();
     TextEditingController _emailController = TextEditingController();
     TextEditingController _passwordController = TextEditingController();
+    TextEditingController _confirmPasswordController = TextEditingController();
     FirebaseServices _auth = FirebaseServices();
 
     @override
@@ -18,23 +22,56 @@ class RegScreen extends StatelessWidget {
       _emailController.dispose();
       _userController.dispose();
       _passwordController.dispose();
+      _confirmPasswordController.dispose();
     }
 
     void SignUp() async {
-      String username = _userController.text;
-      String password = _passwordController.text;
-      String email = _emailController.text;
-      print(email + password);
-      User? user = await _auth.signUpwithEmailAndpassword(email, password);
-      if (user != null) {
-        print("success");
-      } else {
-        print("hi");
+      if (_formKey.currentState?.validate() ?? false) {
+        String username = _userController.text;
+        String password = _passwordController.text;
+        String email = _emailController.text;
+
+        try {
+          User? user = await _auth.signUpwithEmailAndpassword(email, password);
+          if (user != null) {
+            // Registration successful
+            Fluttertoast.showToast(
+              msg: "Registration successful",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          } else {
+            // Registration failed
+            Fluttertoast.showToast(
+              msg: "Registration failed",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          }
+        } catch (error) {
+          // Handle any errors during registration
+          print("Error during registration: $error");
+          Fluttertoast.showToast(
+            msg: "Error during registration: $error",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
       }
     }
 
     return Scaffold(
-        body: Stack(
+        body: SingleChildScrollView(
+            child: Stack(
       children: [
         Container(
           height: double.infinity,
@@ -58,6 +95,8 @@ class RegScreen extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 200.0),
+          child:Form(
+            key:_formKey,
           child: Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -90,9 +129,17 @@ class RegScreen extends StatelessWidget {
                     hnttxt: 'Enter Email',
                     icon: Icons.person,
                     kybrdtype: TextInputType.emailAddress,
-                     validator: (value) {
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your full name';
+                        return 'Please enter Email';
+                      } else {
+                        bool isValidEmail =
+                            RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                                .hasMatch(value);
+
+                        if (!isValidEmail) {
+                          return 'Please enter a valid Email';
+                        }
                       }
                       return null; // Validation passed
                     },
@@ -103,22 +150,30 @@ class RegScreen extends StatelessWidget {
                     hnttxt: 'Enter Password',
                     icon: Icons.visibility_off,
                     kybrdtype: TextInputType.text,
-                     validator: (value) {
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your full name';
+                        return 'Please enter password';
+                      } else {
+                        if (value.length < 8) {
+                          return 'Password should be atleast of 8 character';
+                        }
                       }
                       return null; // Validation passed
                     },
                   ),
                   InputField(
-                    controller: _passwordController,
+                    controller: _confirmPasswordController,
                     lbltxt: ' Confirm  Password',
                     hnttxt: 'Enter RePassword',
                     icon: Icons.visibility_off,
                     kybrdtype: TextInputType.text,
-                     validator: (value) {
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your full name';
+                        return 'Please enter password';
+                      } else {
+                        if (value != _passwordController.text) {
+                          return 'Confirm password does not match';
+                        }
                       }
                       return null; // Validation passed
                     },
@@ -162,7 +217,8 @@ class RegScreen extends StatelessWidget {
             ),
           ),
         ),
+        ),
       ],
-    ));
+    )));
   }
 }
