@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
-import 'package:larvae_classification/Screens/HomeScreen2.dart';
-import 'SignUpScreen2.dart';
+import 'package:larvae_classification/Screens/HomeScreen.dart';
+import 'SignUpScreen.dart';
 import 'LoginScreen.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 
@@ -16,7 +16,7 @@ FirebaseServices _auth = FirebaseServices();
       try{
  UserCredential? user = await _auth.signInWithGoogle();
  if(user!=null){
-  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen2()));
+  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
  }}
  catch(e){
   print('error occur while doing google ${e}');

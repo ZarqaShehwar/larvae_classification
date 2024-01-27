@@ -6,14 +6,14 @@ import 'package:larvae_classification/Screens/PictureScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:larvae_classification/Screens/ProfileScreen.dart';
 
-class HomeScreen2 extends StatefulWidget {
-  const HomeScreen2({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomeScreen2> createState() => _HomeScreen2State();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreen2State extends State<HomeScreen2> {
+class _HomeScreenState extends State<HomeScreen> {
   File? selectedImage;
   Uint8List? image;
 

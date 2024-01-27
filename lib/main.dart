@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:larvae_classification/Screens/HomeScreen2.dart';
+import 'package:larvae_classification/Screens/HomeScreen.dart';
 import 'package:larvae_classification/Screens/WelcomeScreen.dart';
 import 'package:larvae_classification/firebase_options.dart';
 

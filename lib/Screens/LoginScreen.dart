@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 16.0,
           );
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HomeScreen2()));
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         } else {
           // Registration failed
           Fluttertoast.showToast(

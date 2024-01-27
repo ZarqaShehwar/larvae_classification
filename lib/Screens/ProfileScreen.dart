@@ -14,11 +14,13 @@ class ProfleScreen extends StatefulWidget {
 }
 
 class _ProfleScreenState extends State<ProfleScreen> {
+
   final List<Map<String, dynamic>> data2 = [
     {"icon": Icons.leaderboard, "heading1": "Results", "heading2": "216"},
     {"icon": Icons.check, "heading1": "Accuracy", "heading2": "100%"},
     {"icon": Icons.verified_rounded, "heading1": "Detected", "heading2": "20"},
   ];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,8 +174,6 @@ class _ProfleScreenState extends State<ProfleScreen> {
                           "title": "Help",
                           "rightIcon": Icons.chevron_right,
                           "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> Help()))
-
-
                         },
 
                         // Add more items as needed

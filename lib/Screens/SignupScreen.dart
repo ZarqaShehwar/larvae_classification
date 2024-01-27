@@ -30,7 +30,6 @@ class RegScreen extends StatelessWidget {
         String username = _userController.text;
         String password = _passwordController.text;
         String email = _emailController.text;
-
         try {
           User? user = await _auth.signUpwithEmailAndpassword(email, password);
           if (user != null) {
