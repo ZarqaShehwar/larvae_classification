@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Larva Classification',
       theme: ThemeData(
         fontFamily: ('inter'),
         useMaterial3: true,
