@@ -4,8 +4,6 @@ import 'package:larvae_classification/Screens/ProfileScreenPages/ContactUs.dart'
 import 'package:larvae_classification/Screens/ProfileScreenPages/FAQ.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/Help.dart';
 
-
-
 class ProfleScreen extends StatefulWidget {
   const ProfleScreen({super.key});
 
@@ -14,13 +12,12 @@ class ProfleScreen extends StatefulWidget {
 }
 
 class _ProfleScreenState extends State<ProfleScreen> {
-
   final List<Map<String, dynamic>> data2 = [
     {"icon": Icons.leaderboard, "heading1": "Results", "heading2": "216"},
     {"icon": Icons.check, "heading1": "Accuracy", "heading2": "100%"},
     {"icon": Icons.verified_rounded, "heading1": "Detected", "heading2": "20"},
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,16 +51,16 @@ class _ProfleScreenState extends State<ProfleScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 80),
-                  SizedBox(
-                    width: 90,
-                    height: 90,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: const Image(
-                          image: AssetImage(
-                              'assets/images/img_licensed_image_4.png'),
-                        )),
-                  ),
+                  // SizedBox(
+                  //   width: 90,
+                  //   height: 90,
+                  //   child: ClipRRect(
+                  //       borderRadius: BorderRadius.circular(100),
+                  //       child: const Image(
+                  //         image: AssetImage(
+                  //             'assets/images/img_licensed_image_4.png'),
+                  //       )),
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -143,37 +140,40 @@ class _ProfleScreenState extends State<ProfleScreen> {
                           "icon": Icons.favorite_rounded,
                           "title": "My Saved",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()=>{}
+                          "onClick": () => {}
                         },
 
                         {
                           "icon": Icons.settings,
                           "title": "Setting",
                           "rightIcon": Icons.chevron_right,
-                           "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> const ContactUs()))
-
-
+                          "onClick": () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ContactUs()))
                         },
                         {
                           "icon": Icons.contact_mail,
                           "title": "Contact us",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> const ContactUs()))
-
+                          "onClick": () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ContactUs()))
                         },
                         {
                           "icon": Icons.question_answer,
                           "title": "FAQ",
                           "rightIcon": Icons.chevron_right,
-                           "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> FAQ()))
-
-
+                          "onClick": () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => FAQ()))
                         },
                         {
                           "icon": Icons.help,
                           "title": "Help",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> Help()))
+                          "onClick": () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Help()))
                         },
 
                         // Add more items as needed
@@ -204,27 +204,28 @@ class CustomColumn extends StatelessWidget {
             padding: EdgeInsets.only(top: 5, bottom: 10, left: 10, right: 4),
             child: InkWell(
               onTap: item["onClick"],
-              child:ListTile(
-              leading: ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      colors: <Color>[
-                        Colors.black,
-                        Colors.red,
-                      ],
-                    ).createShader(bounds);
-                  },
-                  child: Icon(item["icon"] as IconData, size: 20)),
-              title: Text(
-                item["title"] as String,
-                style:  const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-              ),
-              trailing: Icon(
-                item["rightIcon"] as IconData,
-                size: 28,
-                color: Colors.grey,
-              ),
+              child: ListTile(
+                leading: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) {
+                      return const LinearGradient(
+                        colors: <Color>[
+                          Colors.black,
+                          Colors.red,
+                        ],
+                      ).createShader(bounds);
+                    },
+                    child: Icon(item["icon"] as IconData, size: 20)),
+                title: Text(
+                  item["title"] as String,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w800),
+                ),
+                trailing: Icon(
+                  item["rightIcon"] as IconData,
+                  size: 28,
+                  color: Colors.grey,
+                ),
               ),
             ),
           )

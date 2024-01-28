@@ -7,21 +7,22 @@ import 'LoginScreen.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 
 class WelcomeScreen extends StatelessWidget {
- WelcomeScreen({Key? key}) : super(key: key);
-FirebaseServices _auth = FirebaseServices();
+  WelcomeScreen({Key? key}) : super(key: key);
+  FirebaseServices _auth = FirebaseServices();
   @override
   Widget build(BuildContext context) {
-
-    void SignInwithgoogle()async{
-      try{
- UserCredential? user = await _auth.signInWithGoogle();
- if(user!=null){
-  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
- }}
- catch(e){
-  print('error occur while doing google ${e}');
- }
+    void SignInwithgoogle() async {
+      try {
+        UserCredential? user = await _auth.signInWithGoogle();
+        if (user != null) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        }
+      } catch (e) {
+        print('error occur while doing google ${e}');
+      }
     }
+
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -75,7 +76,7 @@ FirebaseServices _auth = FirebaseServices();
           GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const RegScreen()));
+                  MaterialPageRoute(builder: (context) => RegScreen()));
             },
             child: Container(
               height: 53,
@@ -96,7 +97,7 @@ FirebaseServices _auth = FirebaseServices();
               ),
             ),
           ),
-         const SizedBox(height:20),
+          const SizedBox(height: 20),
           const Text(
             'Login with Social Media',
             style: TextStyle(fontSize: 17, color: Colors.white),
@@ -111,38 +112,9 @@ FirebaseServices _auth = FirebaseServices();
                 height: 40,
                 width: 80,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(30))
-                ),
-                child: ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                    shaderCallback: (Rect bounds) {
-                      
-                      return const LinearGradient(
-                        colors: <Color>[
-                          Colors.black,
-                          Colors.red,
-                        ],
-                      ).createShader(bounds);
-                    },
-                    child: const  Icon(FontAwesomeIcons.facebookF,size: 24.0, )),
-              ),
-             const  SizedBox(width: 20,),
-             InkWell(
-              onTap: ()=>{
-              SignInwithgoogle()
-              },
-             child:
-              Container(
-                height: 40,
-                width: 80,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(30))
-
-                ),
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: ShaderMask(
                     blendMode: BlendMode.srcIn,
                     shaderCallback: (Rect bounds) {
@@ -153,12 +125,41 @@ FirebaseServices _auth = FirebaseServices();
                         ],
                       ).createShader(bounds);
                     },
-                    child:const  Icon(FontAwesomeIcons.google,size: 20.0,)),
+                    child: const Icon(
+                      FontAwesomeIcons.facebookF,
+                      size: 24.0,
+                    )),
               ),
-             ),
+              const SizedBox(
+                width: 20,
+              ),
+              InkWell(
+                onTap: () => {SignInwithgoogle()},
+                child: Container(
+                  height: 40,
+                  width: 80,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: ShaderMask(
+                      blendMode: BlendMode.srcIn,
+                      shaderCallback: (Rect bounds) {
+                        return const LinearGradient(
+                          colors: <Color>[
+                            Colors.black,
+                            Colors.red,
+                          ],
+                        ).createShader(bounds);
+                      },
+                      child: const Icon(
+                        FontAwesomeIcons.google,
+                        size: 20.0,
+                      )),
+                ),
+              ),
             ],
           ),
-       
         ]),
       ),
     );
