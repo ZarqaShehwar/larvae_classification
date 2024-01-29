@@ -9,8 +9,9 @@ class RegScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+    
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController _userController = TextEditingController();
     TextEditingController _emailController = TextEditingController();
     TextEditingController _passwordController = TextEditingController();
