@@ -506,7 +506,6 @@ packages:
       sha256: "2e123074287cc9fd6c09de8336dae606d1ddb88d9ac47358826db698c176a1f2"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "1.0.4"
   nested:
     dependency: transitive
@@ -516,9 +515,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-=======
-    version: "1.0.5"
->>>>>>> 5550aee1641fbc1eda6657e79457a192fb1c70ed
   outline_gradient_button:
     dependency: "direct main"
     description:
