@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 class FirebaseServices {
   FirebaseAuth _auth = FirebaseAuth.instance;
- GoogleAuthProvider _googleauthprovider = GoogleAuthProvider();
-
+  GoogleAuthProvider _googleauthprovider = GoogleAuthProvider();
 
   Future<User?> signInwithEmailAndpassword(
       String email, String password) async {
@@ -29,9 +27,14 @@ class FirebaseServices {
       return null;
     }
   }
+   Future<void> signOut()async{
+    await _auth.signOut();
+  }
+
   Future<UserCredential?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      print("credential:$googleUser");
 
       if (googleUser == null) {
         // User canceled the sign-in process
@@ -41,10 +44,11 @@ class FirebaseServices {
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
-      final OAuthCredential credential = GoogleAuthProvider.credential(
+      final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      print("credential:$credential");
 
       return await _auth.signInWithCredential(credential);
     } catch (e) {

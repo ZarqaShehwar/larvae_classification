@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
+import 'package:larvae_classification/Screens/LoginScreen.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/ContactUs.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/FAQ.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/Help.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 
@@ -14,6 +18,7 @@ class ProfleScreen extends StatefulWidget {
 }
 
 class _ProfleScreenState extends State<ProfleScreen> {
+FirebaseServices _auth = FirebaseServices();
 
   final List<Map<String, dynamic>> data2 = [
     {"icon": Icons.leaderboard, "heading1": "Results", "heading2": "216"},
@@ -129,7 +134,7 @@ class _ProfleScreenState extends State<ProfleScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 60),
+                  SizedBox(height: 30),
                   Expanded(
                       child: Container(
                     decoration: const BoxDecoration(
@@ -174,6 +179,14 @@ class _ProfleScreenState extends State<ProfleScreen> {
                           "title": "Help",
                           "rightIcon": Icons.chevron_right,
                           "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> Help()))
+                        },
+                         {
+                          "icon": Icons.help,
+                          "title": "Log Out",
+                          "rightIcon": Icons.chevron_right,
+                          "onClick":()async=>{
+                             await _auth.signOut(),
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const  LoginScreen()))}
                         },
 
                         // Add more items as needed

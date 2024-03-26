@@ -40,7 +40,7 @@ class _InputFieldState extends State<InputField> {
             ? IconButton(
                 icon: Icon(
                   isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.grey,
+                  color: Colors.black,
                   size: 24,
                 ),
                 onPressed: () {
@@ -49,7 +49,11 @@ class _InputFieldState extends State<InputField> {
                   });
                 },
               )
-            : null,
+            : Icon(
+                widget.icon,
+                color: Colors.black, // You can adjust this color
+                size: 24,
+              ),
         labelText: widget.lbltxt,
         labelStyle: const TextStyle(
           color: Color(0xffB81736),

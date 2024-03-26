@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
+import 'package:larvae_classification/Screens/LoginScreen.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class RegScreen extends StatelessWidget {
+class RegScreen extends StatefulWidget {
   const RegScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<RegScreen> createState() => _RegScreenState();
+}
 
-    
+class _RegScreenState extends State<RegScreen> {
+  @override
+  Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController _userController = TextEditingController();
     TextEditingController _emailController = TextEditingController();
     TextEditingController _passwordController = TextEditingController();
     TextEditingController _confirmPasswordController = TextEditingController();
     FirebaseServices _auth = FirebaseServices();
-
+    bool _isloading = true;
     @override
     void dispose() {
       _emailController.dispose();
@@ -31,14 +35,20 @@ class RegScreen extends StatelessWidget {
         String username = _userController.text;
         String password = _passwordController.text;
         String email = _emailController.text;
+
         try {
+          setState(() {
+            _isloading = true;
+            print(_isloading);
+          });
           User? user = await _auth.signUpwithEmailAndpassword(email, password);
+
           if (user != null) {
             // Registration successful
             Fluttertoast.showToast(
               msg: "Registration successful",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               backgroundColor: Colors.green,
               textColor: Colors.white,
               fontSize: 16.0,
@@ -71,154 +81,203 @@ class RegScreen extends StatelessWidget {
 
     return Scaffold(
         body: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
             child: Stack(
-      children: [
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Color(0xffB81736),
-              Color(0xff281537),
-            ]),
-          ),
-          child: const Padding(
-            padding: EdgeInsets.only(top: 60.0, left: 22),
-            child: Text(
-              'Create Your\nAccount',
-              style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 200.0),
-          child:Form(
-            key:_formKey,
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-              color: Colors.white,
-            ),
-            height: double.infinity,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 18.0, right: 18),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InputField(
-                    controller: _userController,
-                    lbltxt: 'Full Name',
-                    hnttxt: '',
-                    icon: Icons.keyboard,
-                    kybrdtype: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your full name';
-                      }
-                      return null; // Validation passed
-                    },
+              children: [
+                Container(
+                  height: 400,
+                  width: MediaQuery.sizeOf(context).width,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Color(0xffB81736),
+                      Color(0xff281537),
+                    ]),
                   ),
-                  InputField(
-                    controller: _emailController,
-                    lbltxt: 'Email',
-                    hnttxt: 'Enter Email',
-                    icon: Icons.person,
-                    kybrdtype: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Email';
-                      } else {
-                        bool isValidEmail =
-                            RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                                .hasMatch(value);
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 60.0, left: 22),
+                    child: Text(
+                      'Create Your\nAccount',
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 200.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40)),
+                          color: Colors.white,
+                        ),
+                        width: MediaQuery.sizeOf(context).width,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 18.0, right: 18, top: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InputField(
+                                controller: _userController,
+                                lbltxt: 'Full Name',
+                                hnttxt: '',
+                                icon: Icons.keyboard,
+                                kybrdtype: TextInputType.text,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your full name';
+                                  }
+                                  if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                                    return 'Name should only contain alphabetic characters and must start with a character';
+                                  }
+                                  return null; // Validation passed
+                                },
+                              ),
+                              InputField(
+                                controller: _emailController,
+                                lbltxt: 'Email',
+                                hnttxt: 'Enter Email',
+                                icon: Icons.person,
+                                kybrdtype: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter Email';
+                                  } else {
+                                    bool isValidEmail = RegExp(
+                                            r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                                        .hasMatch(value);
 
-                        if (!isValidEmail) {
-                          return 'Please enter a valid Email';
-                        }
-                      }
-                      return null; // Validation passed
-                    },
-                  ),
-                  InputField(
-                    controller: _passwordController,
-                    lbltxt: 'Password',
-                    hnttxt: 'Enter Password',
-                    icon: Icons.visibility_off,
-                    kybrdtype: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter password';
-                      } else {
-                        if (value.length < 8) {
-                          return 'Password should be atleast of 8 character';
-                        }
-                      }
-                      return null; // Validation passed
-                    },
-                  ),
-                  InputField(
-                    controller: _confirmPasswordController,
-                    lbltxt: ' Confirm  Password',
-                    hnttxt: 'Enter RePassword',
-                    icon: Icons.visibility_off,
-                    kybrdtype: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter password';
-                      } else {
-                        if (value != _passwordController.text) {
-                          return 'Confirm password does not match';
-                        }
-                      }
-                      return null; // Validation passed
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 70,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      SignUp();
-                    },
-                    child: Container(
-                      height: 55,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        gradient: const LinearGradient(colors: [
-                          Color(0xffB81736),
-                          Color(0xff281537),
-                        ]),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'SIGN UP',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.white),
+                                    if (!isValidEmail) {
+                                      return 'Please enter a valid Email';
+                                    }
+                                  }
+                                  return null; // Validation passed
+                                },
+                              ),
+                              InputField(
+                                controller: _passwordController,
+                                lbltxt: 'Password',
+                                hnttxt: 'Enter Password',
+                                isPassword: true,
+                                icon: Icons.visibility_off,
+                                kybrdtype: TextInputType.text,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter password';
+                                  } else {
+                                    if (value.length < 8) {
+                                      return 'Password should be atleast of 8 character';
+                                    }
+                                  }
+                                  return null; // Validation passed
+                                },
+                              ),
+                              InputField(
+                                controller: _confirmPasswordController,
+                                lbltxt: ' Confirm  Password',
+                                hnttxt: 'Enter RePassword',
+                                isPassword: true,
+                                icon: Icons.visibility_off,
+                                kybrdtype: TextInputType.text,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter password';
+                                  } else {
+                                    if (value != _passwordController.text) {
+                                      return 'Confirm password does not match';
+                                    }
+                                  }
+                                  return null; // Validation passed
+                                },
+                              ),
+                              // const SizedBox(
+                              //   height: 10,
+                              // ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  SignUp();
+                                },
+                                child: Container(
+                                  height: 55,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    gradient: const LinearGradient(colors: [
+                                      Color(0xffB81736),
+                                      Color(0xff281537),
+                                    ]),
+                                  ),
+                                  child: _isloading != false
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                              color: Colors.white))
+                                      : const Center(
+                                          child: Text(
+                                          'SIGN UP',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        )),
+                                ),
+                              ),
+
+                              Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    const Text(
+                                      "Already have an Account?",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.grey),
+                                    ),
+                                    ShaderMask(
+                                      blendMode: BlendMode.srcIn,
+                                      shaderCallback: (Rect bounds) {
+                                        return const LinearGradient(
+                                          colors: <Color>[
+                                            Colors.black,
+                                            Colors.red,
+                                          ],
+                                        ).createShader(bounds);
+                                      },
+                                      child: TextButton(
+                                        onPressed: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginScreen())),
+                                        child: Text('Log In',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 80,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        ),
-      ],
-    )));
+                ),
+              ],
+            )));
   }
 }

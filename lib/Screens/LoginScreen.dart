@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:larvae_classification/Screens/HomeScreen2.dart';
+import 'package:larvae_classification/Screens/HomeScreen.dart';
+import 'package:larvae_classification/Screens/SignupScreen.dart';
 import 'package:larvae_classification/commonUtils/Buton.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         print("Error during registration: $e");
         Fluttertoast.showToast(
-          msg: "Error during registration: $e",
+          msg: "Error during Login: $e",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
@@ -130,16 +131,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _passwordController,
                         lbltxt: 'Password',
                         hnttxt: 'Enter Password',
+                        isPassword: true,
                         icon: Icons.visibility_off,
                         kybrdtype: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter password';
-                          } else {
-                            if (value.length < 8) {
-                              return 'Password should be atleast of 8 character';
-                            }
-                          }
+                          } 
                           return null; // Validation passed
                         },
                       ),
@@ -172,17 +170,45 @@ class _LoginScreenState extends State<LoginScreen> {
                               Color(0xff281537),
                             ]),
                           ),
-                          child: const Center(
+                          child: const  Center(
                             child: Text(
                               'SIGN IN',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
-                                  color: Colors.white),
+                                  color: Colors.white
+                               )
                             ),
                           ),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.center,
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                          
+                          const Text("Don't have an Account?",style: TextStyle(fontSize: 12,color: Colors.grey),),
+                          ShaderMask(
+                  blendMode: BlendMode.srcIn,
+                  shaderCallback: (Rect bounds) {
+                    return const LinearGradient(
+                      colors: <Color>[
+                        Colors.black,
+                        Colors.red,
+                      ],
+                    ).createShader(bounds);
+                  },
+                  child:
+                           TextButton(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegScreen())), child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                               )
+                            ), ),),
+                        ],),
+                      )
                     ],
                   ),
                 ),
