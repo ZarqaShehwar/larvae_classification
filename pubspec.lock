@@ -113,7 +113,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
-<<<<<<< HEAD
   convert:
     dependency: transitive
     description:
@@ -122,8 +121,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
-=======
->>>>>>> 5550aee1641fbc1eda6657e79457a192fb1c70ed
   cross_file:
     dependency: transitive
     description:
@@ -594,7 +591,6 @@ packages:
       sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "2.1.7"
   provider:
     dependency: "direct main"
@@ -612,9 +608,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-=======
-    version: "2.1.8"
->>>>>>> 5550aee1641fbc1eda6657e79457a192fb1c70ed
   sky_engine:
     dependency: transitive
     description: flutter
@@ -684,7 +677,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
-<<<<<<< HEAD
   tflite:
     dependency: "direct main"
     description:
@@ -693,8 +685,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
-=======
->>>>>>> 5550aee1641fbc1eda6657e79457a192fb1c70ed
   typed_data:
     dependency: transitive
     description:
@@ -744,10 +734,5 @@ packages:
     source: hosted
     version: "1.0.4"
 sdks:
-<<<<<<< HEAD
   dart: ">=3.2.0-194.0.dev <4.0.0"
   flutter: ">=3.13.0"
-=======
-  dart: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
->>>>>>> 5550aee1641fbc1eda6657e79457a192fb1c70ed
