@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
-import 'package:larvae_classification/Screens/LoginScreen.dart';
+import 'package:larvae_classification/Provider/UserData.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/ContactUs.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/FAQ.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/Help.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
-
+import 'package:provider/provider.dart';
 
 class ProfleScreen extends StatefulWidget {
   const ProfleScreen({super.key});
@@ -18,16 +16,21 @@ class ProfleScreen extends StatefulWidget {
 }
 
 class _ProfleScreenState extends State<ProfleScreen> {
-FirebaseServices _auth = FirebaseServices();
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   final List<Map<String, dynamic>> data2 = [
     {"icon": Icons.leaderboard, "heading1": "Results", "heading2": "216"},
     {"icon": Icons.check, "heading1": "Accuracy", "heading2": "100%"},
     {"icon": Icons.verified_rounded, "heading1": "Detected", "heading2": "20"},
   ];
-  
+
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserData>(context);
+    var photoURL = userProvider.photoURL;
+    var email = userProvider.email;
+    var displayName = userProvider.displayName;
+
     return Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
@@ -63,25 +66,27 @@ FirebaseServices _auth = FirebaseServices();
                     width: 90,
                     height: 90,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: const Image(
-                          image: AssetImage(
-                              'assets/images/img_licensed_image_4.png'),
-                        )),
+                      borderRadius: BorderRadius.circular(100),
+                     child: Image.network(
+  photoURL != null && Uri.parse(photoURL!).isAbsolute
+      ? photoURL!
+      : "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+),
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    'Zarqa Shehwar',
-                    style: TextStyle(
+                 Text(
+              '$displayName',
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  const Text(
-                    'zarqashehwar02@gmail.com',
-                    style: TextStyle(
+                  Text(
+                    '${email}',
+                    style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         color: Colors.white),
@@ -126,7 +131,7 @@ FirebaseServices _auth = FirebaseServices();
                               ],
                             ),
                           ),
-                          separatorBuilder: (context, index) => VerticalDivider(
+                          separatorBuilder: (context, index) => const VerticalDivider(
                             color: Colors.grey, // Customize the color as needed
                             thickness: 1, // Customize the thickness as needed
                           ),
@@ -134,7 +139,7 @@ FirebaseServices _auth = FirebaseServices();
                       ),
                     ],
                   ),
-                  SizedBox(height: 30),
+                const   SizedBox(height: 30),
                   Expanded(
                       child: Container(
                     decoration: const BoxDecoration(
@@ -148,47 +153,39 @@ FirebaseServices _auth = FirebaseServices();
                           "icon": Icons.favorite_rounded,
                           "title": "My Saved",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()=>{}
+                          "onClick": () => {}
                         },
 
-                        {
-                          "icon": Icons.settings,
-                          "title": "Setting",
-                          "rightIcon": Icons.chevron_right,
-                           "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> const ContactUs()))
-
-
-                        },
                         {
                           "icon": Icons.contact_mail,
                           "title": "Contact us",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> const ContactUs()))
-
+                          "onClick": () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ContactUs()))
                         },
                         {
                           "icon": Icons.question_answer,
                           "title": "FAQ",
                           "rightIcon": Icons.chevron_right,
-                           "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> FAQ()))
-
-
+                          "onClick": () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => FAQ()))
                         },
                         {
                           "icon": Icons.help,
                           "title": "Help",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> Help()))
+                          "onClick": () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Help()))
                         },
-                         {
-                          "icon": Icons.help,
+                        {
+                          "icon": Icons.exit_to_app,
                           "title": "Log Out",
                           "rightIcon": Icons.chevron_right,
-                          "onClick":()async=>{
-                             await _auth.signOut(),
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const  LoginScreen()))}
-                        },
-
+                          "onClick": () async =>
+                              {FirebaseServices().signOut(context)},
+                        }
                         // Add more items as needed
                       ],
                     ),
@@ -214,30 +211,31 @@ class CustomColumn extends StatelessWidget {
       children: [
         for (var item in data)
           Padding(
-            padding: EdgeInsets.only(top: 5, bottom: 10, left: 10, right: 4),
+            padding:const  EdgeInsets.only(top: 5, bottom: 10, left: 10, right: 4),
             child: InkWell(
               onTap: item["onClick"],
-              child:ListTile(
-              leading: ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      colors: <Color>[
-                        Colors.black,
-                        Colors.red,
-                      ],
-                    ).createShader(bounds);
-                  },
-                  child: Icon(item["icon"] as IconData, size: 20)),
-              title: Text(
-                item["title"] as String,
-                style:  const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-              ),
-              trailing: Icon(
-                item["rightIcon"] as IconData,
-                size: 28,
-                color: Colors.grey,
-              ),
+              child: ListTile(
+                leading: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) {
+                      return const LinearGradient(
+                        colors: <Color>[
+                          Colors.black,
+                          Colors.red,
+                        ],
+                      ).createShader(bounds);
+                    },
+                    child: Icon(item["icon"] as IconData, size: 20)),
+                title: Text(
+                  item["title"] as String,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w800),
+                ),
+                trailing: Icon(
+                  item["rightIcon"] as IconData,
+                  size: 28,
+                  color: Colors.grey,
+                ),
               ),
             ),
           )

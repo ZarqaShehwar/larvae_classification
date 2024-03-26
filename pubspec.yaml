@@ -48,6 +48,8 @@ dependencies:
   tflite: ^1.1.2
   flutter_vision: ^1.1.4
   fluttertoast: ^8.2.4
+  uuid: ^4.3.3
+  provider: ^6.1.2
 
 
 

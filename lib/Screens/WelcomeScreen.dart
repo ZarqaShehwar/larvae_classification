@@ -2,26 +2,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
 import 'package:larvae_classification/Screens/HomeScreen.dart';
+import 'package:larvae_classification/commonUtils/Snackbar.dart';
 import 'SignUpScreen.dart';
 import 'LoginScreen.dart';
-import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 
 class WelcomeScreen extends StatelessWidget {
- WelcomeScreen({Key? key}) : super(key: key);
-FirebaseServices _auth = FirebaseServices();
+  WelcomeScreen({Key? key}) : super(key: key);
+  final FirebaseServices _auth = FirebaseServices();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-
-    void SignInwithgoogle()async{
-      try{
- UserCredential? user = await _auth.signInWithGoogle();
- if(user!=null){
-  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
- }}
- catch(e){
-  print('error occur while doing google ${e}');
- }
+    void signInwithgoogle(BuildContext context) async {
+      try {
+        String res = await _auth.signInWithGoogle(context);
+        if (res == "Success") {
+          // ignore: use_build_context_synchronously
+          ShowSnackBar(res, context);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        }
+      } catch (e) {
+        ShowSnackBar("${e.toString()}", context);
+      }
     }
+
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -96,7 +101,7 @@ FirebaseServices _auth = FirebaseServices();
               ),
             ),
           ),
-         const SizedBox(height:20),
+          const SizedBox(height: 20),
           const Text(
             'Login with Social Media',
             style: TextStyle(fontSize: 17, color: Colors.white),
@@ -104,61 +109,29 @@ FirebaseServices _auth = FirebaseServices();
           const SizedBox(
             height: 18,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 40,
-                width: 80,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(30))
-                ),
-                child: ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                    shaderCallback: (Rect bounds) {
-                      
-                      return const LinearGradient(
-                        colors: <Color>[
-                          Colors.black,
-                          Colors.red,
-                        ],
-                      ).createShader(bounds);
-                    },
-                    child: const  Icon(FontAwesomeIcons.facebookF,size: 24.0, )),
-              ),
-             const  SizedBox(width: 20,),
-             InkWell(
-              onTap: ()=>{
-              SignInwithgoogle()
-              },
-             child:
-              Container(
-                height: 40,
-                width: 80,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(30))
 
+          InkWell(
+            onTap: () => {signInwithgoogle(context)},
+            child: Container(
+                height: 53,
+                width: 320,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.white),
                 ),
-                child: ShaderMask(
-                    blendMode: BlendMode.srcIn,
-                    shaderCallback: (Rect bounds) {
-                      return const LinearGradient(
-                        colors: <Color>[
-                          Colors.black,
-                          Colors.red,
-                        ],
-                      ).createShader(bounds);
-                    },
-                    child:const  Icon(FontAwesomeIcons.google,size: 20.0,)),
-              ),
-             ),
-            ],
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image(image: AssetImage('assets/images/google.png')),
+                    SizedBox(width: 10),
+                    Text(
+                      "Continue with Google",
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    )
+                  ],
+                )),
           ),
-       
         ]),
       ),
     );

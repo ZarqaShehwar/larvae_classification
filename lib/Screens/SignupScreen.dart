@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
 import 'package:larvae_classification/Screens/LoginScreen.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:larvae_classification/commonUtils/Snackbar.dart';
 
 class RegScreen extends StatefulWidget {
   const RegScreen({Key? key}) : super(key: key);
@@ -30,7 +29,7 @@ class _RegScreenState extends State<RegScreen> {
       _confirmPasswordController.dispose();
     }
 
-    void SignUp() async {
+    void SignUp(BuildContext context) async {
       if (_formKey.currentState?.validate() ?? false) {
         String username = _userController.text;
         String password = _passwordController.text;
@@ -39,42 +38,12 @@ class _RegScreenState extends State<RegScreen> {
         try {
           setState(() {
             _isloading = true;
-            print(_isloading);
           });
-          User? user = await _auth.signUpwithEmailAndpassword(email, password);
-
-          if (user != null) {
-            // Registration successful
-            Fluttertoast.showToast(
-              msg: "Registration successful",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          } else {
-            // Registration failed
-            Fluttertoast.showToast(
-              msg: "Registration failed",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
-          }
-        } catch (error) {
+          String res = await _auth.signUpwithEmailAndpassword(context,email, password,username);
+          ShowSnackBar(res, context);
+        } catch (e) {
           // Handle any errors during registration
-          print("Error during registration: $error");
-          Fluttertoast.showToast(
-            msg: "Error during registration: $error",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          ShowSnackBar(e.toString(), context);
         }
       }
     }
@@ -203,9 +172,7 @@ class _RegScreenState extends State<RegScreen> {
                                 height: 40,
                               ),
                               InkWell(
-                                onTap: () {
-                                  SignUp();
-                                },
+                                onTap: () => SignUp(context),
                                 child: Container(
                                   height: 55,
                                   width: 300,

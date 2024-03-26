@@ -21,39 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor: Colors.black,
-          unselectedFontSize: 16,
-          selectedFontSize: 16,
-          items: [
-            BottomNavigationBarItem(
-                icon: IconButton(
-                    onPressed: () {
-                    
-                    },
-                    icon: const Icon(Icons.home)),
-                label: 'Home'),
-            BottomNavigationBarItem(
-                icon: IconButton(
-                    onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Blogs()));
-                    },
-                    icon: const Icon(Icons.article_outlined)),
-                label: 'Blogs'),
-            BottomNavigationBarItem(
-                icon: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfleScreen()));
-                    },
-                    icon: const Icon(Icons.person)),
-                label: 'Profile'),
-          ]),
       body: Stack(
         children: [
           Stack(
@@ -71,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         bottomRight: Radius.circular(50))),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 40, left: 20),
+                padding: const EdgeInsets.only(top: 40, left: 20),
                 child: Row(
                   children: [
                     SizedBox(
@@ -84,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 'assets/images/img_licensed_image_4.png'),
                           )),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     const Text(
                       "Larvae Classification ",
                       style: TextStyle(
@@ -96,43 +63,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 130, left: 27),
+                padding: const EdgeInsets.only(top: 130, left: 27),
                 child: Container(
                     child: Card(
                         elevation: 8,
                         shadowColor: Colors.grey,
                         child: Container(
-                          width: 300,
-                          height: 170,
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              )),
-                              child:Padding(padding: EdgeInsets.only(left:10),
-                              child:Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Early Protection For You &\n Your Family Health",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w900,color: Colors.black),),
-                                 SizedBox(height:20),
-                                  Container(
-                                    width:130,
-                                    height:50,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(colors: 
-                                      [
-                                         Color(0xffB81736),
-                      Color(0xff281537),
-                                      ]),
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                            width: 300,
+                            height: 170,
+                            decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                )),
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Early Protection For You &\n Your Family Health",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.black),
                                     ),
-                                    child:Align(alignment: Alignment.center,child:Text("Learn more",style: TextStyle(fontSize: 14,fontWeight:FontWeight.bold,color: Colors.white,),)),
-                                  )
-                               
-                                ],
-                              ))
-                        ))),
+                                    const SizedBox(height: 20),
+                                    Container(
+                                      width: 130,
+                                      height: 50,
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(colors: [
+                                          Color(0xffB81736),
+                                          Color(0xff281537),
+                                        ]),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      child: const Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Learn more",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          )),
+                                    )
+                                  ],
+                                ))))),
               ),
             ],
           ),
@@ -151,170 +132,190 @@ class _HomeScreenState extends State<HomeScreen> {
                         Radius.circular(10),
                       )),
                   child: Column(
-                    children:[
-                      Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap:()=>pickImageFromCamera(),
-                        child:
-                      Card(
-                          elevation: 8,
-                          shadowColor: Colors.black,
-                          child: Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ShaderMask(
-                                    blendMode: BlendMode.srcIn,
-                                    shaderCallback: (Rect bounds) {
-                                      return const LinearGradient(
-                                        colors: <Color>[
-                                          Colors.black,
-                                          Colors.red,
-                                        ],
-                                      ).createShader(bounds);
-                                    },
-                                    child: const Icon(Icons.camera_alt_outlined,
-                                        size: 22)),
-                               const   SizedBox(height: 4),
-                                const Text(
-                                  'Camera',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ))),
-                      const SizedBox(width: 8),
-                        InkWell(
-                        onTap:()=>pickImage(),
-                        child:
-                      Card(
-                        elevation: 8,
-                        shadowColor: Colors.black,
-                        child: Container(
-                          width: 90,
-                          height: 90,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShaderMask(
-                                  blendMode: BlendMode.srcIn,
-                                  shaderCallback: (Rect bounds) {
-                                    return const LinearGradient(
-                                      colors: <Color>[
-                                        Colors.black,
-                                        Colors.red,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                              onTap: () => pickImageFromCamera(),
+                              child: Card(
+                                  elevation: 8,
+                                  shadowColor: Colors.black,
+                                  child: Container(
+                                    width: 90,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ShaderMask(
+                                            blendMode: BlendMode.srcIn,
+                                            shaderCallback: (Rect bounds) {
+                                              return const LinearGradient(
+                                                colors: <Color>[
+                                                  Colors.black,
+                                                  Colors.red,
+                                                ],
+                                              ).createShader(bounds);
+                                            },
+                                            child: const Icon(
+                                                Icons.camera_alt_outlined,
+                                                size: 22)),
+                                        const SizedBox(height: 4),
+                                        const Text(
+                                          'Camera',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ],
-                                    ).createShader(bounds);
-                                  },
-                                  child: Icon(Icons.image, size: 22)),
-                              SizedBox(height: 4),
-                              Text(
-                                'Gallery',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
+                                    ),
+                                  ))),
+                          const SizedBox(width: 8),
+                          InkWell(
+                            onTap: () => pickImage(),
+                            child: Card(
+                              elevation: 8,
+                              shadowColor: Colors.black,
+                              child: Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ShaderMask(
+                                        blendMode: BlendMode.srcIn,
+                                        shaderCallback: (Rect bounds) {
+                                          return const LinearGradient(
+                                            colors: <Color>[
+                                              Colors.black,
+                                              Colors.red,
+                                            ],
+                                          ).createShader(bounds);
+                                        },
+                                        child:
+                                            const Icon(Icons.image, size: 22)),
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      'Gallery',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
+                          const SizedBox(width: 8),
+                          InkWell(
+                            child: Card(
+                                elevation: 8,
+                                shadowColor: Colors.black,
+                                child: Container(
+                                  width: 90,
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ShaderMask(
+                                          blendMode: BlendMode.srcIn,
+                                          shaderCallback: (Rect bounds) {
+                                            return const LinearGradient(
+                                              colors: <Color>[
+                                                Colors.black,
+                                                Colors.red,
+                                              ],
+                                            ).createShader(bounds);
+                                          },
+                                          child: const Icon(Icons.leaderboard,
+                                              size: 22)),
+                                      const SizedBox(height: 4),
+                                      const Text(
+                                        'Results',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 40),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Health Article",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            ShaderMask(
+                                blendMode: BlendMode.srcIn,
+                                shaderCallback: (Rect bounds) {
+                                  return const LinearGradient(
+                                    colors: <Color>[
+                                      Colors.black,
+                                      Colors.red,
+                                    ],
+                                  ).createShader(bounds);
+                                },
+                                child: const Text(
+                                  "See all",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                          ],
                         ),
                       ),
-                        ),
-                      const SizedBox(width: 8),
-                        InkWell(
-                  
-                        child:
-                      Card(
-                          elevation: 8,
-                          shadowColor: Colors.black,
-                          child: Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ShaderMask(
-                                    blendMode: BlendMode.srcIn,
-                                    shaderCallback: (Rect bounds) {
-                                      return const LinearGradient(
-                                        colors: <Color>[
-                                          Colors.black,
-                                          Colors.red,
-                                        ],
-                                      ).createShader(bounds);
-                                    },
-                                    child: Icon(Icons.leaderboard, size: 22)),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Results',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),),
-
-                    ],
-                  ),
-                  Padding(padding: EdgeInsets.only(left: 20,right: 20,top:40),
-                  child:
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Health Article",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                     ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                  shaderCallback: (Rect bounds) {
-                    return const LinearGradient(
-                      colors: <Color>[
-                        Colors.black,
-                        Colors.red,
-                      ],
-                    ).createShader(bounds);
-                  },
-                  child: Text("See all",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),)),
-                  ],
-                ),
-                ),
-                 Padding(padding: EdgeInsets.only(left: 10,right: 20,top:10),
-                  child:
-                Row(
-                
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width:70,
-                      height:70,
-                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/img_image_16.png'),fit:BoxFit.fill )),
-                     
-                    ),
-
-                        Container(
-                          child:Text("The 25 Healthiest Fruits you can Eat,\nAccording to a Nutritionist",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.black),)
-                        )
-                  ],
-                ))
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 20, top: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 70,
+                                height: 70,
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/img_image_16.png'),
+                                        fit: BoxFit.fill)),
+                              ),
+                              Container(
+                                  child: const Text(
+                                "The 25 Healthiest Fruits you can Eat,\nAccording to a Nutritionist",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ))
+                            ],
+                          ))
                     ],
                   ),
                 ),
-               
               )),
         ],
       ),
@@ -324,7 +325,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future pickImage() async {
     final returnImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    print(returnImage!.path);
     if (returnImage != null) {
       setState(() {
         selectedImage = File(returnImage.path);
@@ -335,8 +335,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) =>
                     PictureScreen(image: image, selectedImage: selectedImage)));
       });
-    } else
+    } else {
       return;
+    }
   }
 
   Future pickImageFromCamera() async {
@@ -352,7 +353,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) =>
                     PictureScreen(image: image, selectedImage: selectedImage)));
       });
-    } else
+    } else {
       return;
+    }
   }
 }

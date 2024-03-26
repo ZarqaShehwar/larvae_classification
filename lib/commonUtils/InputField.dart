@@ -8,7 +8,8 @@ class InputField extends StatefulWidget {
   final IconData? icon;
   final EdgeInsetsGeometry? padding;
   final FormFieldValidator<String>? validator; // Added validator
-  final bool isPassword; // Added for password visibility toggle
+  final bool isPassword;
+  final bool isBlogsTextField; // Added for password visibility toggle
 
   const InputField({
     this.controller,
@@ -18,7 +19,8 @@ class InputField extends StatefulWidget {
     this.padding,
     this.icon,
     this.isPassword = false,
-     this.validator, // Default is not a password field
+    this.validator, 
+    this.isBlogsTextField=false,// Default is not a password field
     super.key,
   });
 
@@ -55,20 +57,46 @@ class _InputFieldState extends State<InputField> {
                 size: 24,
               ),
         labelText: widget.lbltxt,
-        labelStyle: const TextStyle(
+        labelStyle: widget.isBlogsTextField?
+           const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ):
+
+        const TextStyle(
           color: Color(0xffB81736),
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
         hintText: widget.hnttxt,
-        border: const UnderlineInputBorder(
+        border:widget.isBlogsTextField?
+        const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        
+        )
+        :
+         const UnderlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
             width: 1.0,
           ),
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
-        focusedBorder: const UnderlineInputBorder(
+        
+        focusedBorder:widget.isBlogsTextField?
+         const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ):
+         const UnderlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
             width: 1.0,
@@ -77,8 +105,7 @@ class _InputFieldState extends State<InputField> {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       ),
-      validator:widget.validator,
-   
+      validator: widget.validator,
     );
   }
 }

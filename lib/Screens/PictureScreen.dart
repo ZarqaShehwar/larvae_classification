@@ -36,7 +36,6 @@ class _PictureScreenState extends State<PictureScreen> {
   }
 
   Future imageClassification(image) async {
-    print('Welcome, ${image}');
     var recognitions = await vision.yoloOnImage(
         bytesList: image,
         imageHeight: image.height,
@@ -45,11 +44,10 @@ class _PictureScreenState extends State<PictureScreen> {
         confThreshold: 0.4,
         classThreshold: 0.7);
 
-    if (recognitions != null) {
+    if (recognitions!=null) {
       if (recognitions.isNotEmpty) {
         // Continue with processing predictions
         var prediction = recognitions[0];
-        print('Prediction: $prediction');
         setState(() {
           _results = [prediction['label'], prediction['confidence']];
         });
