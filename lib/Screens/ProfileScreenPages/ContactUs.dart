@@ -22,7 +22,7 @@ class ContactUs extends StatelessWidget {
               fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
-      body: Container(
+      body: SizedBox(
           width: MediaQuery.sizeOf(context).width,
           height: MediaQuery.sizeOf(context).height,
           child: Column(
@@ -30,7 +30,7 @@ class ContactUs extends StatelessWidget {
               Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 100,
-                decoration: BoxDecoration(
+                decoration:const  BoxDecoration(
                     gradient: LinearGradient(colors: [
                   Colors.black,
                   Colors.red,
@@ -57,32 +57,32 @@ class ContactUs extends StatelessWidget {
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           )),
-                      child: Padding(
-                          padding: EdgeInsets.only(top: 8, left: 8, bottom: 10),
+                      child: const Padding(
+                          padding:  EdgeInsets.only(top: 8, left: 8, bottom: 10),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                 Text(
                                   "Customer Support",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 ),
-                                const SizedBox(height: 10),
-                                Container(
+                                 SizedBox(height: 10),
+                                 SizedBox(
                                   width: 200,
                                   child: Row(children: [
-                                    const CircleAvatar(
+                                 CircleAvatar(
                                         child: Icon(
                                       FontAwesomeIcons.phone,
                                       size: 20,
                                       color: Colors.grey,
                                     )),
-                                    const SizedBox(width: 10),
-                                    Container(
-                                      child: const Column(
+                                     SizedBox(width: 10),
+                                     SizedBox(
+                                      child:  Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
@@ -105,20 +105,20 @@ class ContactUs extends StatelessWidget {
                                     ),
                                   ]),
                                 ),
-                                const SizedBox(height: 10),
-                                Container(
+                                 SizedBox(height: 10),
+                                SizedBox(
                                     width: 400,
                                     child: Row(
                                       children: [
-                                        const CircleAvatar(
+                                         CircleAvatar(
                                             child: Icon(
                                           FontAwesomeIcons.person,
                                           size: 20,
                                           color: Colors.grey,
                                         )),
-                                        const SizedBox(width: 10),
-                                        Container(
-                                          child: const Column(
+                                         SizedBox(width: 10),
+                                        SizedBox(
+                                          child:  Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
@@ -153,32 +153,32 @@ class ContactUs extends StatelessWidget {
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           )),
-                      child: Padding(
-                          padding: EdgeInsets.only(top: 8, left: 8, bottom: 10),
+                      child: const Padding(
+                          padding:  EdgeInsets.only(top: 8, left: 8, bottom: 10),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                 Text(
                                   "Social Media",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 ),
-                                const SizedBox(height: 10),
-                                Container(
+                                 SizedBox(height: 10),
+                                 SizedBox(
                                   width: 200,
                                   child: Row(children: [
-                                    const CircleAvatar(
+                                     CircleAvatar(
                                         child: Icon(
                                       FontAwesomeIcons.instagram,
                                       size: 20,
                                       color: Colors.grey,
                                     )),
-                                    const SizedBox(width: 10),
-                                    Container(
-                                      child: const Column(
+                                     SizedBox(width: 10),
+                                    SizedBox(
+                                      child:  Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
@@ -201,20 +201,20 @@ class ContactUs extends StatelessWidget {
                                     ),
                                   ]),
                                 ),
-                                const SizedBox(height: 10),
-                                Container(
+                                 SizedBox(height: 10),
+                                 SizedBox(
                                     width: 400,
                                     child: Row(
                                       children: [
-                                        const CircleAvatar(
+                                         CircleAvatar(
                                             child: Icon(
                                           FontAwesomeIcons.facebookF,
                                           size: 20,
                                           color: Colors.grey,
                                         )),
-                                        const SizedBox(width: 10),
-                                        Container(
-                                          child: const Column(
+                                        SizedBox(width: 10),
+                                        SizedBox(
+                                          child:  Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:

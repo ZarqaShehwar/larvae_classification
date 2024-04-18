@@ -45,7 +45,7 @@ final List<Map<String, dynamic>> data = [
               fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
-      body: Container(
+      body: SizedBox(
           width: MediaQuery.sizeOf(context).width,
           height: MediaQuery.sizeOf(context).height,
           child: Column(
@@ -60,9 +60,9 @@ final List<Map<String, dynamic>> data = [
                 ])),
               ),
               for(var item in data)
-              SingleChildScrollView(child:Padding(padding: EdgeInsets.only(left:7,top:2),
+              SingleChildScrollView(child:Padding(padding: const EdgeInsets.only(left:7,top:2),
               child:
-            Container(
+            SizedBox(
               width:MediaQuery.sizeOf(context).width,
               child: Column(
                crossAxisAlignment: CrossAxisAlignment.start,

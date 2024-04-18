@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FireStore.dart';
+import 'package:larvae_classification/Screens/Blogs/Blogs.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,9 +18,10 @@ class AddBlogs extends StatefulWidget {
 
 class _BlogsState extends State<AddBlogs> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  FirestoreMethods _firestore = FirestoreMethods();
+  final FirestoreMethods _firestore = FirestoreMethods();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  bool isLoading = false;
 
   File? selectedImage;
   Uint8List? image;
@@ -35,11 +37,20 @@ class _BlogsState extends State<AddBlogs> {
     if (_formKey.currentState?.validate() ?? false) {
       try {
         if (image != null) {
+          setState(() {
+            isLoading = true;
+          });
           String res = await _firestore.uploadBlogs(
             _descriptionController.text.capitalize(),
             image!,
             _titleController.text.capitalize(),
           );
+          if (res == "Success") {
+            Navigator.pop(context);
+          }
+          setState(() {
+            isLoading = false;
+          });
 
           ShowSnackBar(res, context);
         } else {
@@ -51,16 +62,16 @@ class _BlogsState extends State<AddBlogs> {
     }
   }
 
-  SelectImage() async {
+  selectImage() async {
     return showDialog(
       context: context,
       builder: (context) {
         return SimpleDialog(
-          title: Text("Create a post"),
+          title: const Text("Create a post"),
           children: [
             SimpleDialogOption(
-              padding: EdgeInsets.all(20),
-              child: Text("Choose from gallery"),
+              padding: const EdgeInsets.all(20),
+              child: const Text("Choose from gallery"),
               onPressed: () async {
                 Navigator.of(context).pop();
                 final returnImage =
@@ -99,16 +110,18 @@ class _BlogsState extends State<AddBlogs> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: const Icon(
                 FontAwesomeIcons.arrowLeft,
                 size: 24,
-                color: Colors.white,
+                color: Colors.black,
               )),
           title: const Text(
             "Blogs",
             style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
         body: SingleChildScrollView(
@@ -116,7 +129,7 @@ class _BlogsState extends State<AddBlogs> {
                 padding: const EdgeInsets.all(12),
                 child: Form(
                     key: _formKey,
-                    child: Container(
+                    child: SizedBox(
                         child: Column(children: [
                       image != null
                           ? Container(
@@ -125,10 +138,10 @@ class _BlogsState extends State<AddBlogs> {
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: MemoryImage(image!),
-                                      fit: BoxFit.fitWidth),
+                                      fit: BoxFit.fill),
                                   border: Border.all(),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
                             )
                           : Container(
                               width: MediaQuery.sizeOf(context).width,
@@ -136,8 +149,8 @@ class _BlogsState extends State<AddBlogs> {
                               decoration: BoxDecoration(
                                   color: Colors.grey,
                                   border: Border.all(),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
                               child: Center(
                                   child: ShaderMask(
                                       blendMode: BlendMode.srcIn,
@@ -151,18 +164,19 @@ class _BlogsState extends State<AddBlogs> {
                                       },
                                       child: IconButton(
                                           onPressed: () => {
-                                                SelectImage(),
+                                                selectImage(),
                                               },
                                           icon: const Icon(
                                             Icons.upload,
                                             size: 40,
                                           ))))),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       InputField(
                         controller: _titleController,
                         lbltxt: 'Title',
                         hnttxt: 'Enter Title ',
                         kybrdtype: TextInputType.text,
+                        color: Colors.black,
                         isPassword: false,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -173,12 +187,13 @@ class _BlogsState extends State<AddBlogs> {
                         },
                         isBlogsTextField: true,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       InputField(
                         controller: _descriptionController,
                         lbltxt: 'Description',
                         hnttxt: 'Enter Description ',
                         kybrdtype: TextInputType.multiline,
+                        color: Colors.black,
                         isPassword: false,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -189,7 +204,7 @@ class _BlogsState extends State<AddBlogs> {
                         },
                         isBlogsTextField: true,
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       InkWell(
                         onTap: () => {uploadBlogData()},
                         child: Container(
@@ -202,14 +217,18 @@ class _BlogsState extends State<AddBlogs> {
                               Color(0xff281537),
                             ]),
                           ),
-                          child: const Center(
-                              child: Text(
-                            'Upload',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white),
-                          )),
+                          child: isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Colors.black))
+                              : const Center(
+                                  child: Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white),
+                                )),
                         ),
                       ),
                     ]))))));

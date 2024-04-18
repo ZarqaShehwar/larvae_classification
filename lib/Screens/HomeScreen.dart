@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:larvae_classification/Screens/Blogs/Blogs.dart';
 import 'package:larvae_classification/Screens/PictureScreen.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:larvae_classification/Screens/ProfileScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 130, left: 27),
-                child: Container(
+                child: SizedBox(
                     child: Card(
                         elevation: 8,
                         shadowColor: Colors.grey,
@@ -303,8 +301,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             'assets/images/img_image_16.png'),
                                         fit: BoxFit.fill)),
                               ),
-                              Container(
-                                  child: const Text(
+                             const  SizedBox(
+                                  child:  Text(
                                 "The 25 Healthiest Fruits you can Eat,\nAccording to a Nutritionist",
                                 style: TextStyle(
                                     fontSize: 12,

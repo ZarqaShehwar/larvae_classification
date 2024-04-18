@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
+import 'package:larvae_classification/User/userModel.dart' ;
 
 class UserData extends ChangeNotifier {
-  String _uid = '';
-  String _displayName = '';
-  String _email = '';
-  String _photoURL = '';
+  UserDetail? _user;
 
-  String get uid => _uid;
-  String get displayName => _displayName;
-  String get email => _email;
-  String get photoURL => _photoURL;
+  UserDetail get getUser => _user!;
+Future<void>refreshUser() async{
+  UserDetail user = await FirebaseServices().getUserDetails();
+  _user = user;
+  notifyListeners();
+}
 
-  void updateUserInfo({
-    required String uid,
-    required String displayName,
-    required String email,
-    required String photoURL,
-  }) {
-    _uid = uid;
-    _displayName = displayName;
-    _email = email;
-    _photoURL = photoURL;
 
-    notifyListeners();
-  }
+ 
 }

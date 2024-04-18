@@ -44,7 +44,7 @@ class _PictureScreenState extends State<PictureScreen> {
         confThreshold: 0.4,
         classThreshold: 0.7);
 
-    if (recognitions!=null) {
+
       if (recognitions.isNotEmpty) {
         // Continue with processing predictions
         var prediction = recognitions[0];
@@ -56,13 +56,8 @@ class _PictureScreenState extends State<PictureScreen> {
           _results = ['No prediction'];
         });
       }
-    } else {
-      // Handle the case where recognitions is null
-      setState(() {
-        _results = ['Error: Recognitions is null'];
-      });
-    }
-  }
+    } 
+  
 
   @override
   Widget build(BuildContext context) {

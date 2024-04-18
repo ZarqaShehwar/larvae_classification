@@ -23,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
       } catch (e) {
-        ShowSnackBar("${e.toString()}", context);
+        ShowSnackBar(e.toString(), context);
       }
     }
 
@@ -80,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RegScreen()));
+                  MaterialPageRoute(builder: (context) =>const RegScreen()));
             },
             child: Container(
               height: 53,

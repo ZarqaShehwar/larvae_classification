@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
+import 'package:larvae_classification/Screens/HomeScreen.dart';
 import 'package:larvae_classification/Screens/LoginScreen.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
 import 'package:larvae_classification/commonUtils/Snackbar.dart';
@@ -14,35 +15,44 @@ class RegScreen extends StatefulWidget {
 class _RegScreenState extends State<RegScreen> {
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    TextEditingController _userController = TextEditingController();
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
-    TextEditingController _confirmPasswordController = TextEditingController();
-    FirebaseServices _auth = FirebaseServices();
-    bool _isloading = true;
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    TextEditingController userController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+    FirebaseServices auth = FirebaseServices();
+    bool isloading = false;
+    
     @override
     void dispose() {
-      _emailController.dispose();
-      _userController.dispose();
-      _passwordController.dispose();
-      _confirmPasswordController.dispose();
+      super.dispose();
+      emailController.dispose();
+      userController.dispose();
+      passwordController.dispose();
+      confirmPasswordController.dispose();
     }
 
-    void SignUp(BuildContext context) async {
-      if (_formKey.currentState?.validate() ?? false) {
-        String username = _userController.text;
-        String password = _passwordController.text;
-        String email = _emailController.text;
+    void signUp(BuildContext context) async {
+      if (formKey.currentState?.validate() ?? false) {
+        String username = userController.text;
+        String password = passwordController.text;
+        String email = emailController.text;
 
         try {
           setState(() {
-            _isloading = true;
+            isloading = true;
           });
-          String res = await _auth.signUpwithEmailAndpassword(context,email, password,username);
+          String res = await auth.signUpwithEmailAndpassword(
+              context, email, password, username);
+              setState(() {
+            isloading = false;
+          });
+          if (res == "Success") {
           ShowSnackBar(res, context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          }
         } catch (e) {
-          // Handle any errors during registration
           ShowSnackBar(e.toString(), context);
         }
       }
@@ -50,7 +60,7 @@ class _RegScreenState extends State<RegScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             child: Stack(
               children: [
                 Container(
@@ -76,7 +86,7 @@ class _RegScreenState extends State<RegScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 200.0),
                   child: Form(
-                    key: _formKey,
+                    key: formKey,
                     child: Expanded(
                       child: Container(
                         decoration: const BoxDecoration(
@@ -93,26 +103,28 @@ class _RegScreenState extends State<RegScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               InputField(
-                                controller: _userController,
+                                controller: userController,
                                 lbltxt: 'Full Name',
                                 hnttxt: '',
                                 icon: Icons.keyboard,
+                                color:Colors.white,
                                 kybrdtype: TextInputType.text,
                                 validator: (value) {
-                                  if (value == null || value.isEmpty) {
+                                  if (value == null ||  value.trim().isEmpty) {
                                     return 'Please enter your full name';
                                   }
-                                  if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                                  if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value.trim())) {
                                     return 'Name should only contain alphabetic characters and must start with a character';
                                   }
                                   return null; // Validation passed
                                 },
                               ),
                               InputField(
-                                controller: _emailController,
+                                controller: emailController,
                                 lbltxt: 'Email',
                                 hnttxt: 'Enter Email',
                                 icon: Icons.person,
+                                color:Colors.white,
                                 kybrdtype: TextInputType.emailAddress,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -130,11 +142,12 @@ class _RegScreenState extends State<RegScreen> {
                                 },
                               ),
                               InputField(
-                                controller: _passwordController,
+                                controller: passwordController,
                                 lbltxt: 'Password',
                                 hnttxt: 'Enter Password',
                                 isPassword: true,
                                 icon: Icons.visibility_off,
+                                color:Colors.white,
                                 kybrdtype: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -148,17 +161,19 @@ class _RegScreenState extends State<RegScreen> {
                                 },
                               ),
                               InputField(
-                                controller: _confirmPasswordController,
+                                controller: confirmPasswordController,
                                 lbltxt: ' Confirm  Password',
                                 hnttxt: 'Enter RePassword',
                                 isPassword: true,
                                 icon: Icons.visibility_off,
+                                color:Colors.white,
+
                                 kybrdtype: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter password';
                                   } else {
-                                    if (value != _passwordController.text) {
+                                    if (value != passwordController.text) {
                                       return 'Confirm password does not match';
                                     }
                                   }
@@ -172,7 +187,7 @@ class _RegScreenState extends State<RegScreen> {
                                 height: 40,
                               ),
                               InkWell(
-                                onTap: () => SignUp(context),
+                                onTap: () => signUp(context),
                                 child: Container(
                                   height: 55,
                                   width: 300,
@@ -183,7 +198,7 @@ class _RegScreenState extends State<RegScreen> {
                                       Color(0xff281537),
                                     ]),
                                   ),
-                                  child: _isloading != false
+                                  child: isloading != false
                                       ? const Center(
                                           child: CircularProgressIndicator(
                                               color: Colors.white))
@@ -224,7 +239,7 @@ class _RegScreenState extends State<RegScreen> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const LoginScreen())),
-                                        child: Text('Log In',
+                                        child: const Text('Log In',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,

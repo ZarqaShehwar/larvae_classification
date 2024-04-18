@@ -9,7 +9,8 @@ class InputField extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final FormFieldValidator<String>? validator; // Added validator
   final bool isPassword;
-  final bool isBlogsTextField; // Added for password visibility toggle
+  final bool isBlogsTextField;
+  final Color? color; // Added for password visibility toggle
 
   const InputField({
     this.controller,
@@ -19,8 +20,9 @@ class InputField extends StatefulWidget {
     this.padding,
     this.icon,
     this.isPassword = false,
-    this.validator, 
-    this.isBlogsTextField=false,// Default is not a password field
+    this.validator,
+    this.color,
+    this.isBlogsTextField = false, // Default is not a password field
     super.key,
   });
 
@@ -57,52 +59,48 @@ class _InputFieldState extends State<InputField> {
                 size: 24,
               ),
         labelText: widget.lbltxt,
-        labelStyle: widget.isBlogsTextField?
-           const TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ):
-
-        const TextStyle(
-          color: Color(0xffB81736),
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
+        labelStyle: widget.isBlogsTextField
+            ?  TextStyle(
+                color: widget.color!,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              )
+            : const TextStyle(
+                color: Color(0xffB81736),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
         hintText: widget.hnttxt,
-        border:widget.isBlogsTextField?
-        const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        
-        )
-        :
-         const UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-        
-        focusedBorder:widget.isBlogsTextField?
-         const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ):
-         const UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
+        border: widget.isBlogsTextField
+            ? const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              )
+            : const UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+        focusedBorder: widget.isBlogsTextField
+            ? const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              )
+            : const UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       ),
       validator: widget.validator,

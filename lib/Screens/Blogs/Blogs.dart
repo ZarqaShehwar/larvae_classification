@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:larvae_classification/Screens/Blogs/AddBlogs.dart';
 import 'package:larvae_classification/Screens/Blogs/BlogsCard.dart';
+import 'package:larvae_classification/Screens/HomeScreen.dart';
+import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 import 'package:larvae_classification/commonUtils/Colors.dart';
 
 class Blogs extends StatefulWidget {
@@ -19,12 +22,12 @@ class _BlogsScreenState extends State<Blogs> {
     onPressed: () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => AddBlogs()),
+        MaterialPageRoute(builder: (context) => const AddBlogs()),
       );
     },
     backgroundColor: floatingActionButtonColor,
-    shape: CircleBorder(), // Set the background color directly
-    child: Icon(
+    shape: const CircleBorder(), // Set the background color directly
+    child: const Icon(
       Icons.add,
       color: Colors.white,
       size: 30,
@@ -34,10 +37,17 @@ class _BlogsScreenState extends State<Blogs> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
+           Navigator.push(context, MaterialPageRoute(builder: (context)=> const MobileNavigationScreen()));
+
             },
-            icon: Icon(Icons.logout_rounded)),
+         
+                  icon: const Icon(
+                    FontAwesomeIcons.arrowLeft,
+                    size: 24,
+                    color: Colors.black,
+                  )),
         centerTitle: true,
-        title: Text("Blogs"),
+        title:const  Text("Blogs"),
       ),
       backgroundColor: Colors.white,
       body: StreamBuilder(

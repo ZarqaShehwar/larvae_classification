@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:larvae_classification/FirebaseServices/FireStore.dart';
+import 'package:larvae_classification/commonUtils/Snackbar.dart';
 
 class SingleBlog extends StatelessWidget {
   final String? photoUrl;
   final String? title;
+  final String? postId;
   final String? description;
 
-  SingleBlog({this.photoUrl, this.title, this.description, Key? key}) : super(key: key);
+  const SingleBlog(
+      {this.photoUrl, this.postId, this.title, this.description, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class SingleBlog extends StatelessWidget {
           icon: const Icon(
             FontAwesomeIcons.arrowLeft,
             size: 24,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         title: const Text(
@@ -27,9 +32,22 @@ class SingleBlog extends StatelessWidget {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+             await FirestoreMethods().delete(postId!, context);
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.delete,
+              size: 24,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -46,28 +64,28 @@ class SingleBlog extends StatelessWidget {
                     fit: BoxFit.fitWidth,
                   ),
                   border: Border.all(),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
               ),
               const SizedBox(height: 20),
               Text(
                 title ?? '',
-                style: TextStyle(
-                  fontSize: 20,
+                style: const TextStyle(
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black,
                   letterSpacing: 1,
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Text(
                   description ?? '',
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),

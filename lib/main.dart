@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:larvae_classification/Screens/HomeScreen.dart';
-import 'package:larvae_classification/Screens/SignupScreen.dart';
 import 'package:larvae_classification/Screens/WelcomeScreen.dart';
 import 'package:larvae_classification/Screens/mobileNavigationScreen.dart';
 import 'package:larvae_classification/firebase_options.dart';

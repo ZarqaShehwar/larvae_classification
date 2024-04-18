@@ -44,14 +44,14 @@ class Screen extends State<MobileNavigationScreen> {
       
     
  body: PageView(
-  
+    physics:const NeverScrollableScrollPhysics(),
   controller: pageController,
   onPageChanged: OnPageChanged,
    children: const [
-  HomeScreen(), // Display the Home Page
+  HomeScreen(), 
   Blogs(),
-  ProfleScreen() // Display the Search Page
-    // Other pages...
+  ProfleScreen()
+ 
   ],
 ),
 bottomNavigationBar: CupertinoTabBar(

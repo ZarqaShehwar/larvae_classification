@@ -85,6 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       lbltxt: 'Email',
                       hnttxt: 'Enter Email',
                       icon: Icons.person,
+                                color:Colors.white,
+
                       kybrdtype: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -108,6 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       isPassword: true,
                       icon: Icons.visibility_off,
                       kybrdtype: TextInputType.text,
+                                color:Colors.white,
+
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter password';
