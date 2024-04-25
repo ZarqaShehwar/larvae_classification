@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
-import 'package:larvae_classification/Screens/HomeScreen.dart';
+import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
+import 'package:larvae_classification/Screens/SignupScreen.dart';
 import 'package:larvae_classification/commonUtils/Snackbar.dart';
-import 'SignUpScreen.dart';
 import 'LoginScreen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class WelcomeScreen extends StatelessWidget {
           // ignore: use_build_context_synchronously
           ShowSnackBar(res, context);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context, MaterialPageRoute(builder: (context) => MobileNavigationScreen()));
         }
       } catch (e) {
         ShowSnackBar(e.toString(), context);
@@ -80,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>const RegScreen()));
+                  MaterialPageRoute(builder: (context) =>const  SignupScreen()));
             },
             child: Container(
               height: 53,

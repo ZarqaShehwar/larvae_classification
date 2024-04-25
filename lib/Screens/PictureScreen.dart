@@ -1,63 +1,75 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: unnecessary_import, depend_on_referenced_packages, file_names, avoid_print
+
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_vision/flutter_vision.dart';
+import 'package:larvae_classification/Screens/ResultPage.dart';
 
 class PictureScreen extends StatefulWidget {
   final Uint8List? image;
   final File? selectedImage;
-
-  const PictureScreen({this.image, this.selectedImage, super.key});
+  const PictureScreen({super.key, this.image, this.selectedImage});
 
   @override
   State<PictureScreen> createState() => _PictureScreenState();
 }
 
 class _PictureScreenState extends State<PictureScreen> {
-  FlutterVision vision = FlutterVision();
+  late FlutterVision _vision;
+  List<dynamic> _results = [];
+  Future<void> loadModel() async {
+    final res = await _vision.loadYoloModel(
+        labels: 'assets/labels.txt',
+        modelPath: 'assets/best_float32.tflite',
+        modelVersion: "yolov8",
+        quantization: false,
+        numThreads: 2,
+        useGpu: false);
+    return res;
+  }
+
+  Future<void> imageClassification(File image) async {
+    Uint8List imageBytes = await image.readAsBytes();
+    var recognitions = await _vision.yoloOnImage(
+        bytesList: imageBytes,
+        imageHeight: 640, // Replace with actual image height
+        imageWidth: 480, // Replace with actual image width
+        iouThreshold: 0.8,
+        confThreshold: 0.4,
+        classThreshold: 0.5);
+    print("recognitions$recognitions");
+
+    setState(() {
+      _results = recognitions;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    loadModel();
+    _vision = FlutterVision();
+    final rs = loadModel().then((_) {
+      print("Model loaded  successfully ");
+    }).catchError((error) {
+      print("Error loading model: $error");
+    });
+    if (kDebugMode) {
+      print("ls$rs");
+    }
   }
 
-  late List _results = [];
-
-  Future loadModel() async {
- await vision.loadYoloModel(
-         labels: "assets/metadata.txt",
-        modelPath: "assets/best_float32.tflite",
-        modelVersion: "yolov8",
-        quantization: false,
-        numThreads: 1,
-        useGpu: false );
-   
+  void _navigateToResultPage(List results, Uint8List image) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ResultPage(results: results, selectedimage: image),
+      ),
+    );
   }
-
-  Future imageClassification(image) async {
-    var recognitions = await vision.yoloOnImage(
-        bytesList: image,
-        imageHeight: image.height,
-        imageWidth: image.width,
-        iouThreshold: 0.8,
-        confThreshold: 0.4,
-        classThreshold: 0.7);
-
-
-      if (recognitions.isNotEmpty) {
-        // Continue with processing predictions
-        var prediction = recognitions[0];
-        setState(() {
-          _results = [prediction['label'], prediction['confidence']];
-        });
-      } else {
-        setState(() {
-          _results = ['No prediction'];
-        });
-      }
-    } 
-  
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +80,8 @@ class _PictureScreenState extends State<PictureScreen> {
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xffB81736),
-                Color(0xff281537),
-              ]),
+              gradient: LinearGradient(colors: [ Color(0xffB81736),
+                      Color(0xff281537),]),
             ),
           ),
           Align(
@@ -82,14 +92,15 @@ class _PictureScreenState extends State<PictureScreen> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 40,
-                        )),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -99,42 +110,61 @@ class _PictureScreenState extends State<PictureScreen> {
                           width: 350,
                           height: 500,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: FileImage(widget.selectedImage!)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(40))),
+                            image: DecorationImage(
+                              image: MemoryImage(widget.image!),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(40)),
+                          ),
                         )
                       : Container(
                           width: 350,
                           height: 500,
                           decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40))),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                          ),
                         ),
                   const SizedBox(height: 20),
                   InkWell(
-                    onTap: () => {imageClassification(widget.image!)},
+                    onTap: () {
+                      // Show loading indicator
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        },
+                      );
+                      // Perform image classification
+                      imageClassification(widget.selectedImage!)
+                          .then((results) {
+                        // Hide loading indicator
+                        Navigator.pop(context); // Close loading dialog
+                        // Navigate to ResultPage and pass the results
+                        _navigateToResultPage(_results, widget.image!);
+                      });
+                    },
                     child: Container(
                       height: 55,
                       width: 300,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                      ),
                       child: const Center(
                         child: Text(
                           'DETECT',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    child: Text(_results.isNotEmpty ? '$_results' : 'Nothing'),
-                  )
                 ],
               ),
             ),

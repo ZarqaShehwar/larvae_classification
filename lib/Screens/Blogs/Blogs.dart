@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:larvae_classification/Screens/Blogs/AddBlogs.dart';
 import 'package:larvae_classification/Screens/Blogs/BlogsCard.dart';
-import 'package:larvae_classification/Screens/HomeScreen.dart';
 import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 import 'package:larvae_classification/commonUtils/Colors.dart';
 
@@ -37,7 +36,7 @@ class _BlogsScreenState extends State<Blogs> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-           Navigator.push(context, MaterialPageRoute(builder: (context)=> const MobileNavigationScreen()));
+           Navigator.push(context, MaterialPageRoute(builder: (context)=> const  MobileNavigationScreen()));
 
             },
          
@@ -51,22 +50,33 @@ class _BlogsScreenState extends State<Blogs> {
       ),
       backgroundColor: Colors.white,
       body: StreamBuilder(
-          stream:
-              FirebaseFirestore.instance.collection("Blogs posts").snapshots(),
-          builder: ((context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                  child: CircularProgressIndicator(
-                color: Colors.white,
-              ));
-            }
-            return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: ((context, index) => BlogsCard(
-                      snap: snapshot.data!.docs[index].data(),
-                    )));
-          })),
+  stream: FirebaseFirestore.instance.collection("Blogs posts").snapshots(),
+  builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.black,
+        ),
+      );
+    } else if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+      return ListView.builder(
+        itemCount: snapshot.data!.docs.length,
+        itemBuilder: (context, index) => BlogsCard(
+          snap: snapshot.data!.docs[index].data(),
+        ),
+      );
+    } else {
+      // Show placeholder image if there's no data in the database
+      return Center(
+        child: Image.asset(
+          'assets/images/nodata.png', // Replace 'placeholder_image.png' with the path to your placeholder image asset
+          width: 200,
+          height: 200,
+        ),
+      );
+    }
+  },
+),
     );
   }
 }

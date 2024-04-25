@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    return const MobileNavigationScreen();
+                    return const  MobileNavigationScreen();
                   } else if (snapshot.hasError) {
                     return Center(
                       child: Text('${snapshot.error}'),
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                   );
                 }
 
-                return WelcomeScreen();
+                return  WelcomeScreen();
               })),
         ));
   }

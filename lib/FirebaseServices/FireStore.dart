@@ -1,5 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:larvae_classification/FirebaseServices/Storage.dart';
@@ -52,6 +53,62 @@ class FirestoreMethods {
     }
     
   }
+  Future<bool> deletePrediction(String predictionId) async {
+    try {
+      // Get the document reference for the prediction using predictionId
+      final predictionRef =
+          _firestore.collection("Predictions").doc(predictionId);
+
+      // Delete the document from Firestore
+      await predictionRef.delete();
+      return true;
+    } catch (err) {
+      if (kDebugMode) {
+        print("Error deleting prediction: $err");
+      }
+      return false;
+
+      // Handle error as needed
+    }
+  }
+    Future<String> storePrediction(
+      String label, double confidence, Uint8List picture, prediction) async {
+    String res = "Some error can be occur";
+    try {
+      String photoUrl =
+          await StorageMethod().blogImage("Predictions", picture, true);
+      String predictionId = const Uuid().v1();
+
+      // Additional data you may want to store
+      DateTime predictionDate = DateTime.now();
+      String userId = auth.currentUser!.uid; // Assuming user authentication
+
+      // Create a model or map to store the prediction data
+      Map<String, dynamic> predictionData = {
+        'label': label,
+        'confidence': confidence,
+        'photoUrl': photoUrl,
+        'predictionId': predictionId,
+        'predictionDate': predictionDate,
+        'userId': userId,
+        "prediction": prediction,
+        // Add more fields as needed
+      };
+
+      await _firestore
+          .collection("Predictions")
+          .doc(predictionId)
+          .set(predictionData);
+      res = "Results Saveded successfully..";
+    } catch (err) {
+      if (kDebugMode) {
+        print("Error storing prediction: $err");
+      }
+      // Handle error as needed
+    }
+    return res;
+  }
+
 
   Future<String> uploadBlogs(
       String description, Uint8List file, String title) async {

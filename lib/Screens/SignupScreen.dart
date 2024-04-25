@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
-import 'package:larvae_classification/Screens/HomeScreen.dart';
 import 'package:larvae_classification/Screens/LoginScreen.dart';
+import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
 import 'package:larvae_classification/commonUtils/Snackbar.dart';
 
-class RegScreen extends StatefulWidget {
-  const RegScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegScreen> createState() => _RegScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _RegScreenState extends State<RegScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
+    bool isLoading = false;
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TextEditingController userController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
     FirebaseServices auth = FirebaseServices();
-    bool isloading = false;
-    
+
     @override
     void dispose() {
       super.dispose();
@@ -34,24 +34,30 @@ class _RegScreenState extends State<RegScreen> {
 
     void signUp(BuildContext context) async {
       if (formKey.currentState?.validate() ?? false) {
+        setState(() {
+          isLoading = true;
+        });
+        if (isLoading==true) {
+         ShowSnackBar("circle", context);
+        }
         String username = userController.text;
         String password = passwordController.text;
         String email = emailController.text;
 
         try {
-          setState(() {
-            isloading = true;
-          });
           String res = await auth.signUpwithEmailAndpassword(
               context, email, password, username);
-              setState(() {
-            isloading = false;
+               setState(() {
+            isLoading = false;
           });
           if (res == "Success") {
-          ShowSnackBar(res, context);
+            ShowSnackBar(res, context);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MobileNavigationScreen()));
           }
+         
         } catch (e) {
           ShowSnackBar(e.toString(), context);
         }
@@ -107,13 +113,14 @@ class _RegScreenState extends State<RegScreen> {
                                 lbltxt: 'Full Name',
                                 hnttxt: '',
                                 icon: Icons.keyboard,
-                                color:Colors.white,
-                                kybrdtype: TextInputType.text,
+                                color: Colors.white,
+                                kybrdtype: TextInputType.emailAddress,
                                 validator: (value) {
-                                  if (value == null ||  value.trim().isEmpty) {
+                                  if (value == null || value.trim().isEmpty) {
                                     return 'Please enter your full name';
                                   }
-                                  if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value.trim())) {
+                                  if (!RegExp(r'^[a-zA-Z]+$')
+                                      .hasMatch(value.trim())) {
                                     return 'Name should only contain alphabetic characters and must start with a character';
                                   }
                                   return null; // Validation passed
@@ -124,8 +131,8 @@ class _RegScreenState extends State<RegScreen> {
                                 lbltxt: 'Email',
                                 hnttxt: 'Enter Email',
                                 icon: Icons.person,
-                                color:Colors.white,
-                                kybrdtype: TextInputType.emailAddress,
+                                color: Colors.white,
+                                kybrdtype: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter Email';
@@ -147,7 +154,7 @@ class _RegScreenState extends State<RegScreen> {
                                 hnttxt: 'Enter Password',
                                 isPassword: true,
                                 icon: Icons.visibility_off,
-                                color:Colors.white,
+                                color: Colors.white,
                                 kybrdtype: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -166,8 +173,7 @@ class _RegScreenState extends State<RegScreen> {
                                 hnttxt: 'Enter RePassword',
                                 isPassword: true,
                                 icon: Icons.visibility_off,
-                                color:Colors.white,
-
+                                color: Colors.white,
                                 kybrdtype: TextInputType.text,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -198,18 +204,18 @@ class _RegScreenState extends State<RegScreen> {
                                       Color(0xff281537),
                                     ]),
                                   ),
-                                  child: isloading != false
+                                  child: isLoading
                                       ? const Center(
-                                          child: CircularProgressIndicator(
-                                              color: Colors.white))
-                                      : const Center(
                                           child: Text(
                                           'SIGN UP',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
                                               color: Colors.white),
-                                        )),
+                                        )):const Center(
+                                          child: CircularProgressIndicator(
+                                              color: Colors.black))
+                                      
                                 ),
                               ),
 
