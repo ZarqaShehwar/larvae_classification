@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:larvae_classification/Screens/Blogs/Blogs.dart';
 import 'package:larvae_classification/Screens/HomeScreen.dart';
 import 'package:larvae_classification/Screens/ProfileScreen.dart';
-import 'package:larvae_classification/Screens/ResultPage.dart';
 import 'package:larvae_classification/Screens/Results.dart';
 
 class MobileNavigationScreen extends StatefulWidget {
