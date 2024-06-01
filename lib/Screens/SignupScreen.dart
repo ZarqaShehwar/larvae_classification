@@ -44,6 +44,7 @@ class _SignupScreenState extends State<SignupScreen> {
               MaterialPageRoute(
                   builder: (context) => MobileNavigationScreen()));
           }
+         
         } catch (e) {
           ShowSnackBar(e.toString(), context);
         }

@@ -93,10 +93,8 @@ class _PictureScreenState extends State<PictureScreen> {
             height: MediaQuery.sizeOf(context).height,
             width:MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xffB81736),
-                Color(0xff281537),
-              ]),
+              gradient: LinearGradient(colors: [ Color(0xffB81736),
+                      Color(0xff281537),]),
             ),
           ),
           Align(
