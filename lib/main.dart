@@ -15,15 +15,14 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget { 
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => UserData()),
-        ],
+   return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_)=>UserData()),
+    ],
         child: MaterialApp(
           title: 'Larvae Classification',
           theme: ThemeData(
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    return const MobileNavigationScreen();
+                    return const  MobileNavigationScreen();
                   } else if (snapshot.hasError) {
                     return Center(
                       child: Text('${snapshot.error}'),
@@ -52,7 +51,7 @@ class MyApp extends StatelessWidget {
                   );
                 }
 
-                return WelcomeScreen();
+                return  WelcomeScreen();
               })),
         ));
   }

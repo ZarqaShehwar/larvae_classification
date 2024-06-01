@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:larvae_classification/FirebaseServices/FireStore.dart';
-import 'package:larvae_classification/commonUtils/Snackbar.dart';
 
 class SingleBlog extends StatelessWidget {
   final String? photoUrl;
@@ -61,7 +60,7 @@ class SingleBlog extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(photoUrl ?? ''),
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
                   border: Border.all(),
                   borderRadius: const BorderRadius.all(Radius.circular(10)),

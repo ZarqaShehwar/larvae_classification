@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:larvae_classification/Screens/Blogs/SingleBlog.dart';
+import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 import 'package:larvae_classification/Screens/PictureScreen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:larvae_classification/Screens/Results.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   File? selectedImage;
   Uint8List? image;
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 50,
-                      height: 50,
+                      width: 60,
+                      height: 60,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: const Image(
                             image: AssetImage(
-                                'assets/images/img_licensed_image_4.png'),
+                                'assets/images/image_not_found.png'),
                           )),
                     ),
                     const SizedBox(width: 20),
@@ -215,6 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(width: 8),
                           InkWell(
+                            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> MySavedResultsPage())),
                             child: Card(
                                 elevation: 8,
                                 shadowColor: Colors.black,
@@ -276,40 +282,102 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ).createShader(bounds);
                                 },
+                                 child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                         MobileNavigationScreen(page: 1,)));
+                                  },
                                 child: const Text(
                                   "See all",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                )),
+                                )),),
                           ],
                         ),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
                               left: 10, right: 20, top: 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 70,
-                                height: 70,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/img_image_16.png'),
-                                        fit: BoxFit.fill)),
-                              ),
-                             const  SizedBox(
-                                  child:  Text(
-                                "The 25 Healthiest Fruits you can Eat,\nAccording to a Nutritionist",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ))
-                            ],
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("Blogs posts")
+                                .orderBy('DatePublished', descending: true)
+                                .limit(1)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.data!.docs.isEmpty) {
+                                return const Text("No Data!");
+                              }
+                              var document = snapshot.data!.docs.first.data()
+                                  as Map<String, dynamic>;
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SingleBlog(
+                                                description:document['Description'],
+                                                title: document['Title'],
+                                                photoUrl: document['PostUrl'],
+                                                postId: document['PostId'],
+                                              )));
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 35,
+                                      backgroundImage:
+                                          NetworkImage(document['PostUrl']),
+                                    ),
+                                    const SizedBox(width:10), 
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            document['Title'],
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  document['Description']
+                                                          .split(' ')
+                                                          .take(10)
+                                                          .join(' ') +
+                                                      '...',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: Colors.grey[600]),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
                           ))
                     ],
                   ),

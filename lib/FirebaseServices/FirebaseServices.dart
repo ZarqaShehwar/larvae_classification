@@ -14,6 +14,7 @@ class FirebaseServices {
 
   Future<model.UserDetail> getUserDetails() async {
     User currentUser = _auth.currentUser!;
+
     DocumentSnapshot snap =
         await _firestore.collection('users').doc(currentUser.uid).get();
     return model.UserDetail.fromSnap(snap);
@@ -35,7 +36,6 @@ class FirebaseServices {
   Future<String> signUpwithEmailAndpassword(BuildContext context, String email,
       String password, String username) async {
     String res = "Some error can be occur";
-
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -49,10 +49,11 @@ class FirebaseServices {
           .collection('users')
           .doc(credential.user!.uid)
           .set(user.ToJson());
+          if(credential.user != null){
       res = "Success";
-    } catch (e) {
-      res = e.toString();
-      return res;
+          }
+    } catch (err) {
+      res = err.toString();
     }
     return res;
   }
@@ -78,6 +79,7 @@ class FirebaseServices {
                 onPressed: () async {
                   await _auth.signOut();
                   await _googleSignIn.signOut();
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => WelcomeScreen()));

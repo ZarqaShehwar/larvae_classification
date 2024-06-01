@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/FirebaseServices/FireStore.dart';
-import 'package:larvae_classification/Screens/Blogs/Blogs.dart';
 import 'package:larvae_classification/commonUtils/InputField.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';

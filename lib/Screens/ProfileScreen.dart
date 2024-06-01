@@ -1,14 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:larvae_classification/FirebaseServices/FirebaseServices.dart';
-import 'package:larvae_classification/Screens/Blogs/Blogs.dart';
+import 'package:larvae_classification/Provider/UserData.dart';
+import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/ContactUs.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/FAQ.dart';
 import 'package:larvae_classification/Screens/ProfileScreenPages/Help.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:larvae_classification/User/userModel.dart'as model;
 import 'package:larvae_classification/commonUtils/Colors.dart';
-import 'package:larvae_classification/commonUtils/Snackbar.dart';
+import 'package:provider/provider.dart';
 
 class ProfleScreen extends StatefulWidget {
   const ProfleScreen({super.key});
@@ -30,30 +32,36 @@ class _ProfleScreenState extends State<ProfleScreen> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
   }
 
-  getData() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      var usersnap = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(auth.currentUser!.uid)
-          .get();
-      userData = usersnap.data()!;
+  // getData() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+      
+  //     // var usersnap = await FirebaseFirestore.instance
+  //     //     .collection('users')
+  //     //     .doc(auth.currentUser!.uid)
+  //     //     .get();
+  //        final model.UserDetail user = Provider.of<UserData>(context,listen: false).getUser;
+  //       print("useeeeeeeeeeer ${user.email}");
+      
+  //       // userData = usersnap.data()!;
+    
 
-      setState(() {
-        isLoading = false;
-      });
-    } catch (err) {
-      ShowSnackBar(err.toString(),context);
-    }
-  }
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   } catch (err) {
+  //     ShowSnackBar(err.toString(), context);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+         final model.UserDetail user = Provider.of<UserData>(context,listen: false).getUser;
     return isLoading
         ? const Center(child: CircularProgressIndicator(color: Colors.black))
         : Scaffold(
@@ -63,7 +71,10 @@ class _ProfleScreenState extends State<ProfleScreen> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                   onPressed: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context)=>const  Blogs()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MobileNavigationScreen()));
                   },
                   icon: const Icon(
                     FontAwesomeIcons.arrowLeft,
@@ -75,7 +86,7 @@ class _ProfleScreenState extends State<ProfleScreen> {
               children: [
                 Container(
                   width: MediaQuery.sizeOf(context).width,
-                  height: MediaQuery.sizeOf(context).height/2,
+                  height: MediaQuery.sizeOf(context).height / 2,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
                         redGradient,
@@ -91,8 +102,8 @@ class _ProfleScreenState extends State<ProfleScreen> {
                       const SizedBox(height: 80),
                       CircleAvatar(
                         radius: 45,
-                        backgroundImage: userData['Photo'] != null
-                            ? NetworkImage(userData['Photo'])
+                        backgroundImage:  user.photoURL!= null
+                            ? NetworkImage(user.photoURL!)
                             : const AssetImage('assets/images/avatar.png')
                                 as ImageProvider<Object>?,
                       ),
@@ -100,14 +111,14 @@ class _ProfleScreenState extends State<ProfleScreen> {
                         height: 10,
                       ),
                       Text(
-                        userData['Username']??"Hello User",
+                        user.username ?? "Hello User",
                         style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       Text(
-                        userData['Email'],
+                        user.email,
                         style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
@@ -164,74 +175,67 @@ class _ProfleScreenState extends State<ProfleScreen> {
                           ),
                         ],
                       ),
-                      
                     ],
                   ),
                 ),
-                 Container(
+                Container(
                   height: 300,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                        color: Colors.white,
-                      ),
-    child:SingleChildScrollView(
-      child:
-        CustomColumn(
-          data: [
-            {
-              "icon": Icons.favorite_rounded,
-              "title": "My Saved",
-              "rightIcon": Icons.chevron_right,
-              "onClick": () => {},
-            },
-            {
-              "icon": Icons.contact_mail,
-              "title": "Contact us",
-              "rightIcon": Icons.chevron_right,
-              "onClick": () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ContactUs()),
-              ),
-            },
-            {
-              "icon": Icons.question_answer,
-              "title": "FAQ",
-              "rightIcon": Icons.chevron_right,
-              "onClick": () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FAQ()),
-              ),
-            },
-            {
-              "icon": Icons.help,
-              "title": "Help",
-              "rightIcon": Icons.chevron_right,
-              "onClick": () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Help()),
-              ),
-            },
-            {
-              "icon": Icons.exit_to_app,
-              "title": "Log Out",
-              "rightIcon": Icons.chevron_right,
-              "onClick": () async =>
-                  {FirebaseServices().signOut(context)},
-            },
-            // Add more items as needed
-          ],
-        ),
-      
-            
-
-    ),
-                 ),
-  
-
-
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: SingleChildScrollView(
+                    child: CustomColumn(
+                      data: [
+                        {
+                          "icon": Icons.favorite_rounded,
+                          "title": "My Saved",
+                          "rightIcon": Icons.chevron_right,
+                          "onClick": () => {},
+                        },
+                        {
+                          "icon": Icons.contact_mail,
+                          "title": "Contact us",
+                          "rightIcon": Icons.chevron_right,
+                          "onClick": () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ContactUs()),
+                              ),
+                        },
+                        {
+                          "icon": Icons.question_answer,
+                          "title": "FAQ",
+                          "rightIcon": Icons.chevron_right,
+                          "onClick": () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => FAQ()),
+                              ),
+                        },
+                        {
+                          "icon": Icons.help,
+                          "title": "Help",
+                          "rightIcon": Icons.chevron_right,
+                          "onClick": () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Help()),
+                              ),
+                        },
+                        {
+                          "icon": Icons.exit_to_app,
+                          "title": "Log Out",
+                          "rightIcon": Icons.chevron_right,
+                          "onClick": () async =>
+                              {FirebaseServices().signOut(context)},
+                        },
+                        // Add more items as needed
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ));
   }
@@ -244,8 +248,7 @@ class CustomColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
