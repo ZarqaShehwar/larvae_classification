@@ -36,8 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
             isLoading = false;
           });
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  MobileNavigationScreen()));
+       Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MobileNavigationScreen(),
+              ));
       } catch (e) {
         ShowSnackBar(e.toString(), context);
       }

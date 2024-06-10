@@ -19,7 +19,7 @@ class _BlogsScreenState extends State<Blogs> {
     return Scaffold(
      floatingActionButton: FloatingActionButton(
     onPressed: () {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const AddBlogs()),
       );
@@ -36,7 +36,7 @@ class _BlogsScreenState extends State<Blogs> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-           Navigator.push(context, MaterialPageRoute(builder: (context)=> const  MobileNavigationScreen()));
+           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const  MobileNavigationScreen()));
 
             },
          

@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 import 'package:larvae_classification/Screens/ResultPage.dart';
@@ -18,7 +17,7 @@ class _DetectionResultState extends State<DetectionResult> {
   bool isLoading = false;
 
   void _navigateToResultPage() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) =>
@@ -27,7 +26,7 @@ class _DetectionResultState extends State<DetectionResult> {
     );
   }
  void _navigateToBack() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) =>
@@ -37,7 +36,16 @@ class _DetectionResultState extends State<DetectionResult> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    
+      return WillPopScope(
+    onWillPop: () async {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MobileNavigationScreen()),
+      );
+      return false; // Returning false will prevent default back button behavior
+    },
+    child: Container(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
         decoration: const BoxDecoration(
@@ -68,7 +76,7 @@ class _DetectionResultState extends State<DetectionResult> {
                 height: 50,
               ),
               Text(
-                widget.results!.isNotEmpty? "Detected":"Not Larvae"  ,
+                widget.results!.isNotEmpty? "Detected":"Not Detected"  ,
                 style:  TextStyle(
                     fontSize: 30,
                           decoration: TextDecoration.none,
@@ -105,6 +113,6 @@ class _DetectionResultState extends State<DetectionResult> {
               ),
             ],
           ),
-        ));
+        )));
   }
 }

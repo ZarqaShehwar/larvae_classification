@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:larvae_classification/Screens/ProfileScreen.dart';
 
 class Help extends StatelessWidget {
   Help({super.key});
@@ -35,7 +36,10 @@ final List<Map<String, dynamic>> data = [
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+               Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfleScreen()),
+              );
             },
             icon: const Icon(FontAwesomeIcons.arrowLeft,
                 size: 24, color: Colors.white)),

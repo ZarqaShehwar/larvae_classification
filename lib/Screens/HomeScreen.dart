@@ -66,13 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 130, left: 27),
+                padding: const EdgeInsets.only(top: 130, left: 27,right:27),
                 child: SizedBox(
                     child: Card(
                         elevation: 8,
                         shadowColor: Colors.grey,
                         child: Container(
-                            width: 300,
+                          
+                            width:MediaQuery.sizeOf(context).width-40,
                             height: 170,
                             decoration: const BoxDecoration(
                                 color: Colors.white,
@@ -128,13 +129,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 shadowColor: Colors.grey,
                 child: Container(
                   width: 400,
-                  height: 350,
+                 constraints: BoxConstraints(
+              minHeight: 100,
+               maxHeight: 350),
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       )),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -258,6 +262,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
+         
+
                       Padding(
                         padding:
                             const EdgeInsets.only(left: 20, right: 20, top: 40),
@@ -284,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                  child: InkWell(
                                   onTap: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -321,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   as Map<String, dynamic>;
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => SingleBlog(
@@ -395,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         selectedImage = File(returnImage.path);
         image = selectedImage!.readAsBytesSync();
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) =>
@@ -413,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         selectedImage = File(returnImage.path);
         image = selectedImage!.readAsBytesSync();
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) =>

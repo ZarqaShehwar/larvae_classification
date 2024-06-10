@@ -20,50 +20,43 @@ class PictureScreen extends StatefulWidget {
 class _PictureScreenState extends State<PictureScreen> {
   late FlutterVision _vision;
   List<dynamic> _results = [];
-  Future<void> loadModel() async {
-    final res = await _vision.loadYoloModel(
-        labels: 'assets/labels.txt',
-        modelPath: 'assets/yolov8.tflite',
-        modelVersion: "yolov8",
-        quantization: false,
-        numThreads: 1,
-        useGpu: false);
-    return res;
-  }
-
- 
 
   @override
   void initState() {
     super.initState();
     _vision = FlutterVision();
-    final rs = loadModel().then((_) {
-      print("Model loaded  successfully ");
+    loadModel().then((_) {
+      print("Model loaded successfully");
     }).catchError((error) {
       print("Error loading model: $error");
     });
-    if (kDebugMode) {
-      print("ls$rs");
-    }
   }
+
+  Future<void> loadModel() async {
+    final res = await _vision.loadYoloModel(
+      labels: 'assets/labels.txt',
+      modelPath: 'assets/updatedmodel.tflite',
+      modelVersion: "yolov8",
+      quantization: false,
+      numThreads: 2,
+      useGpu: false,
+    );
+    return res;
+  }
+
   Future<void> imageClassification(File image) async {
     Uint8List imageBytes = await image.readAsBytes();
 
     // Get image dimensions
-    final decodedImage = await decodeImageFromList(imageBytes);
-    int imageHeight = decodedImage.height;
-    int imageWidth = decodedImage.width;
-
-    print("Image Height: $imageHeight, Image Width: $imageWidth");
 
     var recognitions = await _vision.yoloOnImage(
-      bytesList: imageBytes,
-      imageHeight: imageHeight,
-      imageWidth: imageWidth,
-      iouThreshold: 0.8,
-      confThreshold: 0.4,
-      classThreshold: 0.4                                                                                                                         ,
-    );
+        bytesList: imageBytes,
+        imageHeight: 640, // Replace with actual image height
+        imageWidth: 480, // Replace with actual image width
+        iouThreshold: 0.8,
+        confThreshold: 0.4,
+        classThreshold: 0.5 // Adjust this threshold
+        );
 
     print("Recognitions: $recognitions");
 
@@ -73,7 +66,7 @@ class _PictureScreenState extends State<PictureScreen> {
   }
 
   void _navigateToResultPage(List results, Uint8List image) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetectionResult(
@@ -91,16 +84,17 @@ class _PictureScreenState extends State<PictureScreen> {
         children: [
           Container(
             height: MediaQuery.sizeOf(context).height,
-            width:MediaQuery.sizeOf(context).width,
+            width: MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [ Color(0xffB81736),
-                      Color(0xff281537),]),
+              gradient: LinearGradient(
+                  colors: [Color(0xffB81736), Color(0xff281537)]),
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: SingleChildScrollView(
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: 40),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
@@ -115,9 +109,7 @@ class _PictureScreenState extends State<PictureScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 30),
                   widget.image != null
                       ? Container(
                           width: 350,
@@ -127,8 +119,6 @@ class _PictureScreenState extends State<PictureScreen> {
                               image: MemoryImage(widget.image!),
                               fit: BoxFit.cover,
                             ),
-                            // borderRadius:
-                            //     const BorderRadius.all(Radius.circular(40)),
                           ),
                         )
                       : Container(
@@ -139,10 +129,9 @@ class _PictureScreenState extends State<PictureScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(40)),
                           ),
                         ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 40),
                   InkWell(
                     onTap: () {
-                      // Show loading indicator
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -150,20 +139,10 @@ class _PictureScreenState extends State<PictureScreen> {
                               child: CircularProgressIndicator());
                         },
                       );
-                      // Perform image classification
                       imageClassification(widget.selectedImage!)
                           .then((results) {
-                        // Hide loading indicator
                         Navigator.pop(context); // Close loading dialog
-                        // Navigate to ResultPage and pass the results
                         _navigateToResultPage(_results, widget.image!);
-                        //                 Navigator.push(
-                        // context,
-                        // MaterialPageRoute(
-                        //   builder: (context) =>
-                        //    const   DetectionResult(),
-                        // ),
-                        // );
                       });
                     },
                     child: Container(
@@ -188,7 +167,7 @@ class _PictureScreenState extends State<PictureScreen> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

@@ -72,7 +72,7 @@ class FirestoreMethods {
     }
   }
     Future<String> storePrediction(
-      String label, double confidence, Uint8List picture, prediction) async {
+      String label, double confidence, Uint8List picture) async {
     String res = "Some error can be occur";
     try {
       String photoUrl =
@@ -91,7 +91,7 @@ class FirestoreMethods {
         'predictionId': predictionId,
         'predictionDate': predictionDate,
         'userId': userId,
-        "prediction": prediction,
+        // "prediction": prediction,
         // Add more fields as needed
       };
 

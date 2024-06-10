@@ -19,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
         if (res == "Success") {
           // ignore: use_build_context_synchronously
           ShowSnackBar(res, context);
-          Navigator.push(
+          Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => MobileNavigationScreen()));
         }
       } catch (e) {
@@ -53,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const LoginScreen()));
             },
             child: Container(
@@ -79,7 +79,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) =>const  SignupScreen()));
             },
             child: Container(

@@ -13,49 +13,46 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    TextEditingController userController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
-    FirebaseServices auth = FirebaseServices();
-    bool isLoading = false;
-    
-    void signUp(BuildContext context) async {
-      if (_formKey.currentState?.validate() ?? false) {
-        setState(() {
-          isLoading = true;
-        });
-        String username = userController.text;
-        String password = passwordController.text;
-        String email = emailController.text;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController userController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  FirebaseServices auth = FirebaseServices();
+  bool isLoading = false;
 
-        try {
-          String res = await auth.signUpwithEmailAndpassword(
-              context, email, password, username);
-         
-          ShowSnackBar(res, context);
-          setState(() {
-            isLoading = false;
-          });
-          if(res=="Success"){
- Navigator.push(
+  void signUp(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        isLoading = true;
+      });
+      String username = userController.text;
+      String password = passwordController.text;
+      String email = emailController.text;
+
+      try {
+        String res = await auth.signUpwithEmailAndpassword(
+            context, email, password, username);
+
+        ShowSnackBar(res, context);
+        setState(() {
+          isLoading = false;
+        });
+        if (res == "Success") {
+          Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MobileNavigationScreen()));
-          }
-         
-        } catch (e) {
-          ShowSnackBar(e.toString(), context);
+                builder: (context) => MobileNavigationScreen(),
+              ));
         }
+      } catch (e) {
+        ShowSnackBar(e.toString(), context);
       }
     }
+  }
 
   @override
   Widget build(BuildContext context) {
-   
-
-
     return Scaffold(
         body: SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
@@ -116,7 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 }
                                 return null; // Validation passed
                               },
-                            ), 
+                            ),
                             InputField(
                               controller: emailController,
                               lbltxt: 'Email',

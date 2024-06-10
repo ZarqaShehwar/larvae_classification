@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:larvae_classification/FirebaseServices/FireStore.dart';
+import 'package:larvae_classification/Screens/Blogs/BlogsCard.dart';
+import 'package:larvae_classification/Screens/MobileNavigationScreen.dart';
 
 class SingleBlog extends StatelessWidget {
   final String? photoUrl;
@@ -18,7 +20,7 @@ class SingleBlog extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BlogsCard()));
           },
           icon: const Icon(
             FontAwesomeIcons.arrowLeft,
